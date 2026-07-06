@@ -8,10 +8,10 @@ import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import Experience from "./components/Experience";
 import ScrollToTop from "./components/ScrollToTop";
-import { Award, Code2, ArrowRight, ExternalLink, Hammer, Music, FolderGit } from "lucide-react";
+import { Award, ArrowRight, ExternalLink, Hammer, Music, FolderGit } from "lucide-react";
 
 // Centralized Data Imports
-import { PROJECTS, Project } from "../data/projects";
+import { PROJECTS } from "../data/projects";
 import { CERTIFICATIONS } from "../data/certifications";
 
 const GithubIcon = (props: React.SVGProps<SVGSVGElement>) => (
@@ -31,15 +31,14 @@ const GithubIcon = (props: React.SVGProps<SVGSVGElement>) => (
 
 export default function Home() {
   const [hasEntered, setHasEntered] = useState(false);
-  const [avatarError, setAvatarError] = useState(true); // initials visual avatar as fallback
+  const [avatarError, setAvatarError] = useState(true);
 
   // Filter out Utilities from Homepage Featured list.
-  // Featured projects on home page is exactly: EcoTrace + Task Tracker Board.
   const featuredShipped = PROJECTS.filter(
     (p) => p.status === "Shipped" && (p.name.includes("EcoTrace") || p.name.includes("Task Tracker"))
   );
 
-  // In-progress sandbox projects (Jack&Trades and EchoVerse)
+  // In-progress sandbox projects
   const inProgress = PROJECTS.filter((p) => p.status === "In-Progress");
 
   // Top 3 certifications highlights
@@ -58,8 +57,11 @@ export default function Home() {
             {/* Hero Section */}
             <Hero />
 
+            {/* Subtle Divider */}
+            <div className="border-t border-white/5 w-full" />
+
             {/* Complete Bio About Section */}
-            <section id="about-section" className="py-36 border-t border-white/5 bg-[#050508]/40 relative overflow-hidden">
+            <section id="about-section" className="py-44 bg-[#050508]/20 relative overflow-hidden">
               <div className="max-w-7xl mx-auto px-6 md:px-12 grid lg:grid-cols-5 gap-20 items-center">
                 {/* Bio Info */}
                 <div className="lg:col-span-3 space-y-10">
@@ -123,11 +125,17 @@ export default function Home() {
               </div>
             </section>
 
+            {/* Subtle Divider */}
+            <div className="border-t border-white/5 w-full" />
+
             {/* Experience Timeline Section */}
             <Experience />
 
+            {/* Subtle Divider */}
+            <div className="border-t border-white/5 w-full" />
+
             {/* Featured Shipped Projects */}
-            <section id="featured-highlights" className="py-36 border-t border-white/5 bg-transparent relative overflow-hidden">
+            <section id="featured-highlights" className="py-44 bg-transparent relative overflow-hidden">
               <div className="max-w-7xl mx-auto px-6 md:px-12 space-y-16">
                 <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
                   <div>
@@ -191,8 +199,11 @@ export default function Home() {
               </div>
             </section>
 
+            {/* Subtle Divider */}
+            <div className="border-t border-white/5 w-full" />
+
             {/* Brainstorming & Currently Building Section */}
-            <section className="py-36 border-t border-white/5 bg-[#050508]/40 relative overflow-hidden">
+            <section className="py-44 bg-[#050508]/20 relative overflow-hidden">
               <div className="max-w-7xl mx-auto px-6 md:px-12 space-y-16">
                 <div>
                   <p className="font-mono text-xs text-blue-400 uppercase tracking-widest">// In-Progress Sandbox</p>
@@ -249,8 +260,11 @@ export default function Home() {
               </div>
             </section>
 
+            {/* Subtle Divider */}
+            <div className="border-t border-white/5 w-full" />
+
             {/* Top Certifications Highlight Row */}
-            <section className="py-36 border-t border-white/5 bg-transparent relative overflow-hidden">
+            <section className="py-44 bg-transparent relative overflow-hidden">
               <div className="max-w-7xl mx-auto px-6 md:px-12 space-y-16">
                 <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
                   <div>
