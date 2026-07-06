@@ -3,8 +3,9 @@
 import React, { useState } from "react";
 import Navbar from "../components/Navbar";
 import ScrollToTop from "../components/ScrollToTop";
+import ProjectModal from "../components/ProjectModal";
 import { ExternalLink, Code2 } from "lucide-react";
-import { PROJECTS, Project } from "../../data/projects";
+import resumeData from "../../data/resumeData.json";
 
 const GithubIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg
@@ -25,10 +26,21 @@ type FilterType = "All" | "Full-Stack" | "AI & Data Science" | "Utilities";
 
 export default function ProjectsPage() {
   const [filter, setFilter] = useState<FilterType>("All");
+  
+  // Modal states for progressive disclosure
+  const [selectedProj, setSelectedProj] = useState<any | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const projectsList = resumeData.projects;
 
   const filteredProjects = filter === "All"
-    ? PROJECTS
-    : PROJECTS.filter((p) => p.category === filter);
+    ? projectsList
+    : projectsList.filter((p) => p.category === filter);
+
+  const openProjectDetails = (proj: any) => {
+    setSelectedProj(proj);
+    setIsModalOpen(true);
+  };
 
   return (
     <>
@@ -69,10 +81,11 @@ export default function ProjectsPage() {
             {filteredProjects.map((project, idx) => (
               <div
                 key={idx}
-                className="glass-card flex flex-col justify-between rounded-none border border-white/5 bg-[#08080c] overflow-hidden group hover:border-blue-500/20"
+                onClick={() => openProjectDetails(project)}
+                className="glass-card flex flex-col justify-between rounded-none border border-white/5 bg-[#08080c] overflow-hidden group hover:border-blue-500/20 cursor-pointer"
               >
                 {/* Header Image Placeholder */}
-                <div className={`h-40 w-full bg-gradient-to-b ${project.gradient} p-6 flex flex-col justify-between border-b border-white/5 relative`}>
+                <div className={`h-40 w-full bg-gradient-to-b ${project.gradient || "from-blue-500/10 via-purple-500/5 to-transparent"} p-6 flex flex-col justify-between border-b border-white/5 relative`}>
                   {/* Visual Blueprint Frame */}
                   <div className="absolute inset-2 border border-white/5 border-dashed pointer-events-none" />
                   
@@ -83,6 +96,7 @@ export default function ProjectsPage() {
                         href={project.githubUrl}
                         target="_blank"
                         rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
                         className="text-gray-400 hover:text-white transition-colors"
                         aria-label="GitHub Repository"
                       >
@@ -93,6 +107,7 @@ export default function ProjectsPage() {
                           href={project.liveUrl}
                           target="_blank"
                           rel="noopener noreferrer"
+                          onClick={(e) => e.stopPropagation()}
                           className="text-gray-400 hover:text-white transition-colors"
                           aria-label="Live Demo"
                         >
@@ -130,6 +145,14 @@ export default function ProjectsPage() {
 
         </div>
       </main>
+
+      {/* Detail disclosure modal */}
+      <ProjectModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        project={selectedProj}
+      />
+
       <ScrollToTop />
     </>
   );

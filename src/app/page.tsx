@@ -8,11 +8,11 @@ import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import Experience from "./components/Experience";
 import ScrollToTop from "./components/ScrollToTop";
-import { Award, ArrowRight, ExternalLink, Hammer, Music, FolderGit } from "lucide-react";
+import ProjectModal from "./components/ProjectModal";
+import { Award, Code2, ArrowRight, ExternalLink, Hammer, Music, FolderGit, MapPin, Mail, MessageSquare, Layers } from "lucide-react";
 
-// Centralized Data Imports
-import { PROJECTS } from "../data/projects";
-import { CERTIFICATIONS } from "../data/certifications";
+// Centralized JSON Import
+import resumeData from "../data/resumeData.json";
 
 const GithubIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg
@@ -32,17 +32,24 @@ const GithubIcon = (props: React.SVGProps<SVGSVGElement>) => (
 export default function Home() {
   const [hasEntered, setHasEntered] = useState(false);
   const [avatarError, setAvatarError] = useState(true);
+  
+  // Modal states for progressive disclosure
+  const [selectedProj, setSelectedProj] = useState<any | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Filter out Utilities from Homepage Featured list.
-  const featuredShipped = PROJECTS.filter(
+  // Parse centralized projects data
+  const homepageProjects = resumeData.projects.filter(
     (p) => p.status === "Shipped" && (p.name.includes("EcoTrace") || p.name.includes("Task Tracker"))
   );
+  
+  const sandboxProjects = resumeData.projects.filter((p) => p.status === "In-Progress");
+  
+  const highlightedCerts = resumeData.certifications.slice(0, 3);
 
-  // In-progress sandbox projects
-  const inProgress = PROJECTS.filter((p) => p.status === "In-Progress");
-
-  // Top 3 certifications highlights
-  const highlightedCerts = CERTIFICATIONS.slice(0, 3);
+  const openProjectDetails = (proj: any) => {
+    setSelectedProj(proj);
+    setIsModalOpen(true);
+  };
 
   return (
     <>
@@ -54,272 +61,262 @@ export default function Home() {
           <Navbar />
           <main className="flex-1 w-full bg-[#030303] opacity-0 animate-fade-in animate-fill-forwards" style={{ animationDelay: "100ms" }}>
             
-            {/* Hero Section */}
+            {/* Hero Splash Header */}
             <Hero />
 
-            {/* Subtle Divider */}
-            <div className="border-t border-white/5 w-full" />
-
-            {/* Complete Bio About Section */}
-            <section id="about-section" className="py-44 bg-[#050508]/20 relative overflow-hidden">
-              <div className="max-w-7xl mx-auto px-6 md:px-12 grid lg:grid-cols-5 gap-20 items-center">
-                {/* Bio Info */}
-                <div className="lg:col-span-3 space-y-10">
-                  <div>
-                    <p className="font-mono text-xs text-blue-400 uppercase tracking-widest">// About Me</p>
-                    <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight text-white mt-4">
-                      Saatvik Gupta
-                    </h2>
-                    <div className="h-[2px] w-12 bg-gradient-to-r from-blue-500 to-purple-500 mt-3 rounded-full" />
-                  </div>
-                  <p className="text-gray-300 leading-relaxed text-base font-light">
-                    Hi, I'm Saatvik — a 3rd year Computer Science student who believes the best way to learn is by actually doing. 
-                    I don't wait for opportunities to come — I go out and create them. Passionate about using technology to solve 
-                    real problems and create meaningful impact. Still finding my path, and I think that's okay — curiosity is my 
-                    compass and consistency is my habit. Open to internships, collaborations, and opportunities.
-                  </p>
-                  <div className="flex flex-wrap gap-4 pt-4">
-                    <Link
-                      href="/skills"
-                      className="group inline-flex items-center gap-2 px-6 py-3 border border-white/10 hover:border-white/20 text-gray-300 hover:text-white text-xs uppercase tracking-widest font-bold font-mono transition-colors"
-                    >
-                      View Skills Catalog
-                      <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                    </Link>
-                  </div>
-                </div>
-
-                {/* Profile Avatar Card */}
-                <div className="lg:col-span-2 flex justify-center">
-                  <div className="relative w-64 h-64 glass-card border border-white/10 flex items-center justify-center overflow-hidden bg-[#08080c]">
-                    <div className="absolute inset-3 border border-white/5 border-dashed pointer-events-none" />
-                    
+            {/* Split-Pane Dashboard Container */}
+            <div className="max-w-7xl mx-auto px-6 md:px-12 py-24 grid lg:grid-cols-3 gap-16 items-start">
+              
+              {/* LEFT PANE: Sticky Bio, Metrics, & Contact Panel */}
+              <div className="lg:sticky lg:top-28 space-y-10 lg:pr-6">
+                
+                {/* Visual Avatar & Name */}
+                <div className="space-y-6">
+                  <div className="relative w-28 h-28 glass-card border border-white/10 flex items-center justify-center overflow-hidden bg-[#08080c]">
+                    <div className="absolute inset-1.5 border border-white/5 border-dashed pointer-events-none" />
                     {!avatarError ? (
                       <div className="relative w-full h-full">
                         <Image
                           src="/portrait.jpg"
-                          alt="Saatvik Gupta Portrait"
+                          alt={resumeData.profile.name}
                           fill
                           className="object-cover"
                           onError={() => setAvatarError(true)}
                         />
                       </div>
                     ) : (
-                      <div className="flex flex-col items-center justify-center text-center space-y-4">
-                        <div className="w-24 h-24 rounded-full bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-600 flex items-center justify-center shadow-lg shadow-purple-500/20 border border-white/15">
-                          <span className="text-3xl font-extrabold text-white tracking-widest font-mono">SG</span>
-                        </div>
-                        <div className="text-[10px] font-mono text-gray-400 uppercase tracking-widest">
-                          Saatvik Gupta
-                        </div>
+                      <div className="w-16 h-16 rounded-full bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-600 flex items-center justify-center shadow-lg border border-white/15">
+                        <span className="text-xl font-extrabold text-white tracking-widest font-mono">SG</span>
                       </div>
                     )}
-
-                    {/* Frame Accents */}
-                    <div className="absolute top-2 left-2 w-2.5 h-2.5 border-t border-l border-white/20" />
-                    <div className="absolute top-2 right-2 w-2.5 h-2.5 border-t border-r border-white/20" />
-                    <div className="absolute bottom-2 left-2 w-2.5 h-2.5 border-b border-l border-white/20" />
-                    <div className="absolute bottom-2 right-2 w-2.5 h-2.5 border-b border-r border-white/20" />
                   </div>
-                </div>
-              </div>
-            </section>
-
-            {/* Subtle Divider */}
-            <div className="border-t border-white/5 w-full" />
-
-            {/* Experience Timeline Section */}
-            <Experience />
-
-            {/* Subtle Divider */}
-            <div className="border-t border-white/5 w-full" />
-
-            {/* Featured Shipped Projects */}
-            <section id="featured-highlights" className="py-44 bg-transparent relative overflow-hidden">
-              <div className="max-w-7xl mx-auto px-6 md:px-12 space-y-16">
-                <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
                   <div>
-                    <p className="font-mono text-xs text-emerald-400 uppercase tracking-widest">// Featured Shipped</p>
-                    <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight text-white mt-3">
-                      Featured Projects
-                    </h2>
+                    <h1 className="text-2xl font-extrabold text-white tracking-tight">{resumeData.profile.name}</h1>
+                    <p className="text-xs font-mono text-blue-400 mt-2 tracking-wider leading-relaxed">{resumeData.profile.subtitle}</p>
                   </div>
-                  <Link
-                    href="/projects"
-                    className="group inline-flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider text-blue-400 hover:text-white transition-colors"
-                  >
-                    All Projects Directory
-                    <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-                  </Link>
                 </div>
 
-                <div className="flex overflow-x-auto pb-10 pt-4 gap-8 no-scrollbar scroll-smooth snap-x snap-mandatory w-full">
-                  {featuredShipped.map((project, idx) => (
-                    <div
-                      key={idx}
-                      className="flex-shrink-0 w-[300px] sm:w-[380px] snap-start glass-card rounded-none border border-white/10 overflow-hidden flex flex-col justify-between shadow-2xl bg-[#08080c] hover:border-blue-500/20 transition-all duration-300"
+                {/* Left side quick anchors */}
+                <nav className="hidden lg:flex flex-col gap-3 font-mono text-xs text-gray-500 uppercase tracking-widest pt-4 border-t border-white/5">
+                  <a href="#experience" className="hover:text-blue-400 transition-colors flex items-center gap-2">
+                    <span>↳</span> Experience Timeline
+                  </a>
+                  <a href="#featured-projects" className="hover:text-blue-400 transition-colors flex items-center gap-2">
+                    <span>↳</span> Featured Shipped
+                  </a>
+                  <a href="#sandbox" className="hover:text-blue-400 transition-colors flex items-center gap-2">
+                    <span>↳</span> Brainstorming Sandbox
+                  </a>
+                  <a href="#top-certifications" className="hover:text-blue-400 transition-colors flex items-center gap-2">
+                    <span>↳</span> Certifications
+                  </a>
+                </nav>
+
+                {/* Key Metrics Dashboard */}
+                <div className="grid grid-cols-2 gap-4 pt-6 border-t border-white/5">
+                  {resumeData.metrics.map((metric, i) => (
+                    <div key={i} className="bg-[#08080c] border border-white/5 p-4 flex flex-col justify-between">
+                      <div className="text-xl font-extrabold text-white tracking-tight font-mono">{metric.value}</div>
+                      <div className="text-[10px] text-gray-400 font-mono uppercase tracking-wider mt-1">{metric.label}</div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Quick Info & Contact */}
+                <div className="space-y-4 pt-6 border-t border-white/5 text-xs text-gray-400 font-mono">
+                  <div className="flex items-center gap-2.5">
+                    <MapPin className="w-4 h-4 text-purple-400" />
+                    <span>{resumeData.profile.location}</span>
+                  </div>
+                  <div className="flex items-center gap-2.5">
+                    <Mail className="w-4 h-4 text-blue-400" />
+                    <a href={`mailto:${resumeData.profile.email}`} className="hover:text-white transition-colors">{resumeData.profile.email}</a>
+                  </div>
+                  <div className="flex gap-4 pt-2">
+                    <a href={resumeData.profile.linkedin} target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors flex items-center gap-1.5">
+                      <MessageSquare className="w-4 h-4 text-blue-500" /> LinkedIn
+                    </a>
+                    <a href={resumeData.profile.github} target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors flex items-center gap-1.5">
+                      <GithubIcon className="w-4 h-4 text-white" /> GitHub
+                    </a>
+                  </div>
+                </div>
+
+              </div>
+
+              {/* RIGHT PANE: Scrollable Feed */}
+              <div className="lg:col-span-2 space-y-24">
+                
+                {/* 1. About Bio text */}
+                <section id="bio" className="space-y-6">
+                  <div>
+                    <p className="font-mono text-xs text-blue-400 uppercase tracking-widest">// Profile Bio</p>
+                    <h2 className="text-xl font-extrabold text-white uppercase tracking-wider font-mono mt-2">Executive Summary</h2>
+                  </div>
+                  <p className="text-gray-300 leading-loose text-base font-light">
+                    {resumeData.profile.bio}
+                  </p>
+                </section>
+
+                <div className="border-t border-white/5 w-full" />
+
+                {/* 2. Experience Section */}
+                <section id="experience">
+                  <Experience />
+                </section>
+
+                <div className="border-t border-white/5 w-full" />
+
+                {/* 3. Featured Shipped Projects */}
+                <section id="featured-projects" className="space-y-12">
+                  <div className="flex items-end justify-between gap-6">
+                    <div>
+                      <p className="font-mono text-xs text-emerald-400 uppercase tracking-widest">// Featured Shipped</p>
+                      <h2 className="text-2xl font-extrabold tracking-tight text-white mt-3">Selected Projects</h2>
+                    </div>
+                    <Link
+                      href="/projects"
+                      className="group inline-flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider text-blue-400 hover:text-white transition-colors"
                     >
-                      <div className="absolute inset-2 border border-white/5 border-dashed pointer-events-none" />
+                      All Projects
+                      <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                    </Link>
+                  </div>
 
-                      {/* Card Visual Header Placeholder */}
-                      <div className={`h-40 w-full bg-gradient-to-b ${project.gradient} p-5 flex flex-col justify-between border-b border-white/5 relative`}>
+                  {/* Clean side-by-side grid */}
+                  <div className="grid md:grid-cols-2 gap-8">
+                    {homepageProjects.map((project, idx) => (
+                      <div
+                        key={idx}
+                        onClick={() => openProjectDetails(project)}
+                        className="glass-card rounded-none border border-white/10 overflow-hidden flex flex-col justify-between shadow-2xl bg-[#08080c] hover:border-blue-500/20 transition-all duration-300 cursor-pointer p-6 relative group"
+                      >
                         <div className="absolute inset-2 border border-white/5 border-dashed pointer-events-none" />
-                        <div className="flex items-center justify-between z-10">
-                          <span className="text-[10px] font-mono text-gray-400">// SHIPPED {idx + 1}</span>
-                          <div className="flex items-center gap-3">
-                            <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors">
-                              <GithubIcon className="w-4.5 h-4.5" />
-                            </a>
-                            {project.liveUrl && (
-                              <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors">
-                                <ExternalLink className="w-4.5 h-4.5" />
-                              </a>
-                            )}
+                        
+                        <div className="space-y-4">
+                          <div className="flex items-center justify-between">
+                            <span className="text-[9px] font-mono text-gray-500">// FEATURED {idx + 1}</span>
+                            <FolderGit className="w-5 h-5 text-blue-400 group-hover:scale-110 transition-transform duration-300" />
                           </div>
+                          <h3 className="text-lg font-bold text-white leading-tight">{project.name.split(" — ")[0]}</h3>
+                          <p className="text-gray-300 text-xs sm:text-sm leading-loose line-clamp-3 font-light">{project.description}</p>
                         </div>
-                        <div className="flex items-center gap-3.5 z-10">
-                          <div className="p-2 bg-black/40 border border-white/10">
-                            <FolderGit className="w-8 h-8 text-blue-400" />
-                          </div>
-                          <h3 className="text-base font-bold text-white truncate">{project.name.split(" — ")[0]}</h3>
-                        </div>
-                      </div>
 
-                      <div className="p-5 space-y-4 flex-1 flex flex-col justify-between relative z-10">
-                        <p className="text-gray-300 text-xs sm:text-sm leading-loose line-clamp-4 font-light">{project.description}</p>
-                        <div className="flex flex-wrap gap-2 pt-3 border-t border-white/5">
+                        <div className="flex flex-wrap gap-2 pt-4 mt-6 border-t border-white/5 z-10">
                           {project.tags.map((tag) => (
                             <span key={tag} className="text-[9px] px-2 py-0.5 bg-white/5 border border-white/5 text-gray-400 font-mono">{tag}</span>
                           ))}
                         </div>
                       </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </section>
+                    ))}
+                  </div>
+                </section>
 
-            {/* Subtle Divider */}
-            <div className="border-t border-white/5 w-full" />
+                <div className="border-t border-white/5 w-full" />
 
-            {/* Brainstorming & Currently Building Section */}
-            <section className="py-44 bg-[#050508]/20 relative overflow-hidden">
-              <div className="max-w-7xl mx-auto px-6 md:px-12 space-y-16">
-                <div>
-                  <p className="font-mono text-xs text-blue-400 uppercase tracking-widest">// In-Progress Sandbox</p>
-                  <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight text-white mt-3">
-                    Currently Building & Brainstorming
-                  </h2>
-                  <div className="h-[2px] w-20 bg-gradient-to-r from-blue-500 to-purple-500 mt-4 rounded-full" />
-                </div>
+                {/* 4. Brainstorming sandbox */}
+                <section id="sandbox" className="space-y-12">
+                  <div>
+                    <p className="font-mono text-xs text-blue-400 uppercase tracking-widest">// In-Progress Sandbox</p>
+                    <h2 className="text-2xl font-extrabold tracking-tight text-white mt-3">Currently Building</h2>
+                  </div>
 
-                <div className="grid md:grid-cols-2 gap-12">
-                  {inProgress.map((project, idx) => (
-                    <div
-                      key={idx}
-                      className="glass-card rounded-none border border-white/10 overflow-hidden flex flex-col justify-between shadow-2xl bg-[#08080c] hover:border-purple-500/20 transition-all duration-300 p-8 relative"
-                    >
-                      <div className="absolute inset-2 border border-white/5 border-dashed pointer-events-none" />
+                  <div className="grid md:grid-cols-2 gap-8">
+                    {sandboxProjects.map((project, idx) => (
+                      <div
+                        key={idx}
+                        onClick={() => openProjectDetails(project)}
+                        className="glass-card rounded-none border border-white/10 overflow-hidden flex flex-col justify-between shadow-2xl bg-[#08080c] hover:border-purple-500/20 transition-all duration-300 p-6 relative cursor-pointer group"
+                      >
+                        <div className="absolute inset-2 border border-white/5 border-dashed pointer-events-none" />
 
-                      <div className="space-y-6 z-10">
-                        <div className="flex items-center justify-between">
-                          <span className="text-[9px] font-mono text-purple-400 bg-purple-500/10 border border-purple-500/25 px-2.5 py-1 uppercase tracking-wider">
-                            {project.roadmap}
-                          </span>
-                          <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors">
-                            <GithubIcon className="w-5 h-5" />
-                          </a>
-                        </div>
-
-                        <div className="flex items-center gap-4">
-                          <div className="p-2.5 bg-white/5 border border-white/5">
-                            {project.name.includes("Jack") ? (
-                              <Hammer className="w-8 h-8 text-blue-400" />
-                            ) : (
-                              <Music className="w-8 h-8 text-purple-400" />
-                            )}
+                        <div className="space-y-4 z-10">
+                          <div className="flex items-center justify-between">
+                            <span className="text-[9px] font-mono text-purple-400 bg-purple-500/10 border border-purple-500/25 px-2.5 py-1 uppercase tracking-wider font-bold">
+                              {project.roadmap}
+                            </span>
+                            <Hammer className="w-5 h-5 text-purple-400 group-hover:scale-110 transition-transform duration-300" />
                           </div>
                           <h3 className="text-lg font-bold text-white">{project.name}</h3>
+                          <p className="text-gray-300 text-xs sm:text-sm leading-loose line-clamp-3 font-light">
+                            {project.description}
+                          </p>
                         </div>
 
-                        <p className="text-gray-300 text-sm leading-loose font-light">
-                          {project.description}
-                        </p>
+                        <div className="flex flex-wrap gap-2 pt-4 mt-6 border-t border-white/5 z-10">
+                          {project.tags.map((tag) => (
+                            <span key={tag} className="text-[9px] px-2 py-0.5 bg-white/5 border border-white/5 text-gray-400 font-mono">{tag}</span>
+                          ))}
+                        </div>
                       </div>
-
-                      <div className="flex flex-wrap gap-2 pt-4 mt-6 border-t border-white/5 z-10">
-                        {project.tags.map((tag) => (
-                          <span key={tag} className="text-[10px] px-2 py-0.5 bg-white/5 border border-white/5 text-gray-400 font-mono">
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </section>
-
-            {/* Subtle Divider */}
-            <div className="border-t border-white/5 w-full" />
-
-            {/* Top Certifications Highlight Row */}
-            <section className="py-44 bg-transparent relative overflow-hidden">
-              <div className="max-w-7xl mx-auto px-6 md:px-12 space-y-16">
-                <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
-                  <div>
-                    <p className="font-mono text-xs text-blue-400 uppercase tracking-widest">// Credential Highlights</p>
-                    <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight text-white mt-3">
-                      Top Certifications
-                    </h2>
+                    ))}
                   </div>
-                  <Link
-                    href="/certifications"
-                    className="group inline-flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider text-blue-400 hover:text-white transition-colors"
-                  >
-                    All Certifications Directory
-                    <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-                  </Link>
-                </div>
+                </section>
 
-                <div className="flex overflow-x-auto pb-10 pt-4 gap-8 no-scrollbar scroll-smooth snap-x snap-mandatory w-full">
-                  {highlightedCerts.map((cert, idx) => (
-                    <div
-                      key={idx}
-                      className="relative flex-shrink-0 w-[280px] sm:w-[340px] snap-start glass-card rounded-none border border-white/10 p-6 flex flex-col justify-between shadow-2xl bg-[#08080c] hover:border-blue-500/20 transition-all duration-300 h-[320px]"
+                <div className="border-t border-white/5 w-full" />
+
+                {/* 5. Top Certifications */}
+                <section id="top-certifications" className="space-y-12">
+                  <div className="flex items-end justify-between gap-6">
+                    <div>
+                      <p className="font-mono text-xs text-blue-400 uppercase tracking-widest">// Credential Highlights</p>
+                      <h2 className="text-2xl font-extrabold tracking-tight text-white mt-3">Top Certifications</h2>
+                    </div>
+                    <Link
+                      href="/certifications"
+                      className="group inline-flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider text-blue-400 hover:text-white transition-colors"
                     >
-                      <div className="absolute top-2 left-2 w-2 h-2 border-t border-l border-white/20" />
-                      <div className="absolute top-2 right-2 w-2 h-2 border-t border-r border-white/20" />
-                      <div className="absolute bottom-2 left-2 w-2 h-2 border-b border-l border-white/20" />
-                      <div className="absolute bottom-2 right-2 w-2 h-2 border-b border-r border-white/20" />
+                      All Certifications
+                      <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                    </Link>
+                  </div>
 
-                      <div className="flex items-center justify-between">
-                        <span className="text-[9px] font-mono text-purple-400 bg-purple-500/10 border border-purple-500/20 px-2 py-0.5 uppercase tracking-wider">{cert.category}</span>
-                        <Award className="w-5 h-5 text-gray-500" />
-                      </div>
+                  <div className="grid md:grid-cols-3 gap-6">
+                    {highlightedCerts.map((cert, idx) => (
+                      <div
+                        key={idx}
+                        className="relative glass-card p-5 rounded-none border border-white/10 flex flex-col justify-between shadow-2xl bg-[#08080c] hover:border-blue-500/20 transition-all duration-300 h-[260px]"
+                      >
+                        <div className="absolute top-2 left-2 w-2 h-2 border-t border-l border-white/20" />
+                        <div className="absolute top-2 right-2 w-2 h-2 border-t border-r border-white/20" />
+                        <div className="absolute bottom-2 left-2 w-2 h-2 border-b border-l border-white/20" />
+                        <div className="absolute bottom-2 right-2 w-2 h-2 border-b border-r border-white/20" />
 
-                      {/* Cert Seal in the middle */}
-                      <div className="flex justify-center items-center py-2 opacity-35">
-                        <svg className="w-16 h-16 text-gray-600" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <circle cx="50" cy="50" r="38" stroke="currentColor" strokeWidth="1" strokeDasharray="2 2" />
-                          <path d="M50 28 L54 38 L65 38 L56 45 L60 56 L50 49 L40 56 L44 45 L35 38 L46 38 Z" fill="currentColor" />
-                          <path d="M43 72 L37 88 L45 82 L53 88 L47 72" fill="currentColor" opacity="0.5" />
-                          <path d="M57 72 L51 88 L59 82 L67 88 L61 72" fill="currentColor" opacity="0.5" />
-                        </svg>
-                      </div>
+                        <div className="flex items-center justify-between">
+                          <span className="text-[9px] font-mono text-purple-400 bg-purple-500/10 border border-purple-500/20 px-2 py-0.5 uppercase tracking-wider font-bold">{cert.category}</span>
+                          <Award className="w-4.5 h-4.5 text-gray-500" />
+                        </div>
 
-                      <div className="space-y-3">
-                        <h3 className="font-bold text-gray-200 text-sm line-clamp-2">{cert.title}</h3>
-                        <div className="pt-3 border-t border-white/5 flex items-center justify-between text-[10px] font-mono text-gray-400">
-                          <span>{cert.issuer}</span>
-                          <span>{cert.date}</span>
+                        {/* Cert Seal in the middle */}
+                        <div className="flex justify-center items-center py-2 opacity-35">
+                          <svg className="w-12 h-12 text-gray-600" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="50" cy="50" r="38" stroke="currentColor" strokeWidth="1" strokeDasharray="2 2" />
+                            <path d="M50 28 L54 38 L65 38 L56 45 L60 56 L50 49 L40 56 L44 45 L35 38 L46 38 Z" fill="currentColor" />
+                            <path d="M43 72 L37 88 L45 82 L53 88 L47 72" fill="currentColor" opacity="0.5" />
+                            <path d="M57 72 L51 88 L59 82 L67 88 L61 72" fill="currentColor" opacity="0.5" />
+                          </svg>
+                        </div>
+
+                        <div className="space-y-2">
+                          <h3 className="font-bold text-gray-200 text-xs line-clamp-2 leading-snug">{cert.title}</h3>
+                          <div className="pt-2 border-t border-white/5 flex items-center justify-between text-[8px] font-mono text-gray-500">
+                            <span>{cert.issuer}</span>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
-                </div>
+                    ))}
+                  </div>
+                </section>
+
               </div>
-            </section>
+            </div>
+
+            {/* Reusable Progressive Disclosure Modal Dialog */}
+            <ProjectModal
+              isOpen={isModalOpen}
+              onClose={() => setIsModalOpen(false)}
+              project={selectedProj}
+            />
 
           </main>
           <ScrollToTop />

@@ -4,7 +4,7 @@ import React from "react";
 import Navbar from "../components/Navbar";
 import ScrollToTop from "../components/ScrollToTop";
 import { Award, Calendar } from "lucide-react";
-import { CERTIFICATIONS } from "../../data/certifications";
+import resumeData from "../../data/resumeData.json";
 
 export default function CertificationsPage() {
   const getCategoryColor = (cat: string) => {
@@ -16,6 +16,8 @@ export default function CertificationsPage() {
       default: return "text-amber-400 bg-amber-500/10 border-amber-500/20";
     }
   };
+
+  const certificationsList = resumeData.certifications;
 
   return (
     <>
@@ -34,7 +36,7 @@ export default function CertificationsPage() {
 
           {/* Grid Layout of Certificate-like Cards */}
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {CERTIFICATIONS.map((cert, idx) => (
+            {certificationsList.map((cert, idx) => (
               <div
                 key={idx}
                 className="relative glass-card p-6 rounded-none border border-white/10 flex flex-col justify-between h-[360px] bg-[#07070a] transition-all hover:border-blue-500/30 hover:bg-black/90 group"

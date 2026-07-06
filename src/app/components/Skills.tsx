@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Cloud, Cpu, Database, Shield, Code } from "lucide-react";
-import { SKILL_GROUPS } from "../../data/skills";
+import resumeData from "../../data/resumeData.json";
 
 const getIcon = (title: string) => {
   switch (title) {
@@ -40,12 +40,15 @@ const getIcon = (title: string) => {
 };
 
 export default function Skills() {
+  const skillGroups = resumeData.skills;
+
   return (
     <section id="skills" className="py-20 relative overflow-hidden bg-transparent">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         {/* Section Header */}
         <div className="mb-16">
-          <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight bg-gradient-to-r from-white via-gray-200 to-gray-400 bg-clip-text text-transparent">
+          <p className="font-mono text-xs text-blue-400 uppercase tracking-widest">// Technical Catalog</p>
+          <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight bg-gradient-to-r from-white via-gray-200 to-gray-400 bg-clip-text text-transparent mt-2">
             Technical Skills
           </h2>
           <div className="h-[3px] w-20 bg-gradient-to-r from-blue-500 to-purple-500 mt-3 rounded-full" />
@@ -53,7 +56,7 @@ export default function Skills() {
 
         {/* Grouped Skills Columns */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {SKILL_GROUPS.map((group, idx) => {
+          {skillGroups.map((group, idx) => {
             const config = getIcon(group.title);
             return (
               <div
