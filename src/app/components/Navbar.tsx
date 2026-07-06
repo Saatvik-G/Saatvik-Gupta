@@ -7,8 +7,9 @@ import { Menu, X, Terminal } from "lucide-react";
 
 const NAV_ITEMS = [
   { label: "Home", href: "/" },
-  { label: "Projects Directory", href: "/projects" },
-  { label: "Credentials Directory", href: "/credentials" },
+  { label: "Projects", href: "/projects" },
+  { label: "Skills", href: "/skills" },
+  { label: "Certifications", href: "/certifications" },
   { label: "Contact", href: "/contact" },
 ];
 
