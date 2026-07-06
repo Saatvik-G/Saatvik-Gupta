@@ -74,7 +74,7 @@ export default function Skills() {
     : SKILLS.filter((skill) => skill.category === activeCategory);
 
   return (
-    <section id="skills" className="py-24 relative overflow-hidden bg-[#07070a]/50">
+    <section id="skills" className="py-12 relative overflow-hidden bg-transparent">
       {/* Background glow decorator */}
       <div className="absolute bottom-0 right-0 w-80 h-80 bg-purple-500/5 rounded-full blur-3xl -z-10" />
 
@@ -109,7 +109,7 @@ export default function Skills() {
         </div>
 
         {/* Skills Tag Cloud / Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
           {filteredSkills.map((skill, index) => {
             // Pick icon depending on category
             const renderSkillCategoryIcon = (cat: SkillCategory) => {

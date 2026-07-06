@@ -172,12 +172,12 @@ export default function Certifications() {
         {/* Horizontal Scrolling Certifications Grid */}
         <div
           ref={scrollRef}
-          className="flex gap-6 overflow-x-auto pb-8 scroll-smooth no-scrollbar snap-x snap-mandatory"
+          className="flex gap-6 overflow-x-auto pb-8 pt-4 scroll-smooth no-scrollbar snap-x snap-mandatory card-perspective"
         >
           {CERTIFICATIONS.map((cert, index) => (
             <div
               key={`${cert.title}-${index}`}
-              className="flex-shrink-0 w-[280px] sm:w-[320px] snap-start glass-card flex flex-col justify-between p-6 rounded-2xl border border-white/5 relative overflow-hidden group"
+              className="flex-shrink-0 w-[280px] sm:w-[320px] snap-start glass-card flex flex-col justify-between p-6 rounded-2xl border border-white/5 relative overflow-hidden group card-3d"
             >
               {/* Decorative accent corner */}
               <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-blue-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />

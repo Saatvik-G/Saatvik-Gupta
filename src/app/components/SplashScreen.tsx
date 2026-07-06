@@ -16,13 +16,19 @@ interface SplashScreenProps {
 export default function SplashScreen({ onEnter }: SplashScreenProps) {
   const [isFading, setIsFading] = useState(false);
   const [mounted, setMounted] = useState(true);
+  const [triggerBeam, setTriggerBeam] = useState(false);
 
   const handleEnter = () => {
-    setIsFading(true);
+    setTriggerBeam(true);
+    // Allow the light beam to travel across the screen first, then fade out the splash screen
+    setTimeout(() => {
+      setIsFading(true);
+    }, 800);
+
     setTimeout(() => {
       setMounted(false);
       onEnter();
-    }, 1000); // matches transition duration
+    }, 1500);
   };
 
   if (!mounted) return null;
@@ -38,8 +44,13 @@ export default function SplashScreen({ onEnter }: SplashScreenProps) {
         <HeroCanvas />
       </div>
 
+      {/* Traveling Light Beam Indicator */}
+      {triggerBeam && <div className="animate-light-beam z-50 pointer-events-none" />}
+
       {/* Entry UI Overlay */}
-      <div className="relative z-10 text-center space-y-8 max-w-md px-6 select-none">
+      <div className={`relative z-10 text-center space-y-8 max-w-md px-6 select-none transition-all duration-700 ${
+        triggerBeam ? "scale-95 opacity-50 blur-sm" : ""
+      }`}>
         <div className="space-y-3">
           <h1 className="text-4xl md:text-5xl font-extrabold tracking-widest bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-500 bg-clip-text text-transparent">
             SAATVIK GUPTA

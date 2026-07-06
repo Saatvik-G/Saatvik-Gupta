@@ -150,12 +150,12 @@ export default function Projects() {
         {/* Horizontal Scrolling Wrapper */}
         <div
           ref={scrollRef}
-          className="flex gap-8 overflow-x-auto pb-8 scroll-smooth no-scrollbar snap-x snap-mandatory"
+          className="flex gap-8 overflow-x-auto pb-8 pt-4 scroll-smooth no-scrollbar snap-x snap-mandatory card-perspective"
         >
           {PROJECTS.map((project, idx) => (
             <div
               key={`${project.name}-${idx}`}
-              className="flex-shrink-0 w-[300px] sm:w-[360px] snap-start glass-card rounded-2xl border border-white/5 overflow-hidden flex flex-col justify-between"
+              className="flex-shrink-0 w-[300px] sm:w-[360px] snap-start glass-card rounded-2xl border border-white/5 overflow-hidden flex flex-col justify-between card-3d"
             >
               {/* Aesthetic Header Visual */}
               <div className={`h-36 w-full bg-gradient-to-b ${project.gradient} p-6 flex flex-col justify-between border-b border-white/5`}>
