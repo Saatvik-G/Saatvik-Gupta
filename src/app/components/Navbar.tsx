@@ -7,9 +7,8 @@ import { Menu, X, Terminal } from "lucide-react";
 
 const NAV_ITEMS = [
   { label: "Home", href: "/" },
-  { label: "About & Skills", href: "/about" },
-  { label: "Projects", href: "/projects" },
-  { label: "Certifications", href: "/certifications" },
+  { label: "Projects Directory", href: "/projects" },
+  { label: "Credentials Directory", href: "/credentials" },
   { label: "Contact", href: "/contact" },
 ];
 
@@ -18,7 +17,7 @@ export default function Navbar() {
   const pathname = usePathname();
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-[#030303]/80 border-b border-white/5 backdrop-blur-md py-4">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-[#030303]/85 border-b border-white/5 backdrop-blur-md py-4">
       <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between">
         {/* Logo */}
         <Link
@@ -39,8 +38,8 @@ export default function Navbar() {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`relative text-sm font-medium transition-colors hover:text-white py-1 ${
-                  isActive ? "text-white font-semibold" : "text-gray-400"
+                className={`relative text-xs uppercase tracking-widest font-semibold transition-colors hover:text-white py-1 ${
+                  isActive ? "text-white font-bold" : "text-gray-400"
                 }`}
               >
                 {item.label}
@@ -78,8 +77,8 @@ export default function Navbar() {
                 key={item.href}
                 href={item.href}
                 onClick={() => setIsOpen(false)}
-                className={`text-base font-medium transition-colors hover:text-white ${
-                  isActive ? "text-blue-400 font-semibold" : "text-gray-400"
+                className={`text-sm font-semibold tracking-wider uppercase transition-colors hover:text-white ${
+                  isActive ? "text-blue-400 font-bold" : "text-gray-400"
                 }`}
               >
                 {item.label}
