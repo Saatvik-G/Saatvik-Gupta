@@ -2,58 +2,42 @@
 
 import React from "react";
 import { Cloud, Cpu, Database, Shield, Code } from "lucide-react";
+import { SKILL_GROUPS } from "../../data/skills";
 
-interface SkillCategory {
-  title: string;
-  description: string;
-  icon: React.ReactNode;
-  iconColor: string;
-  borderColor: string;
-  skills: string[];
-}
-
-const SKILL_GROUPS: SkillCategory[] = [
-  {
-    title: "Cloud & Architecture",
-    description: "Designing scalable, secure, and reliable virtual systems.",
-    icon: <Cloud className="w-6 h-6 text-blue-400" />,
-    iconColor: "bg-blue-500/10",
-    borderColor: "group-hover:border-blue-500/30",
-    skills: ["Amazon Web Services (AWS)", "Google Cloud Platform", "Cloud Computing", "Solutions Architecture", "Cloud Infrastructure"],
-  },
-  {
-    title: "AI & Machine Learning",
-    description: "Training model architectures and integrating intelligence.",
-    icon: <Cpu className="w-6 h-6 text-purple-400" />,
-    iconColor: "bg-purple-500/10",
-    borderColor: "group-hover:border-purple-500/30",
-    skills: ["Artificial Intelligence", "Machine Learning", "Generative AI", "Google Cloud AI", "LLM Architecture", "BERT Fine-Tuning", "Prompt Engineering"],
-  },
-  {
-    title: "Data Science & Analytics",
-    description: "Processing list data streams and building calculations.",
-    icon: <Database className="w-6 h-6 text-emerald-400" />,
-    iconColor: "bg-emerald-500/10",
-    borderColor: "group-hover:border-emerald-500/30",
-    skills: ["Data Science", "Data Analytics", "Python", "Pandas", "NumPy", "Chart.js", "Data Visualization", "Data Storytelling", "Predictive Modeling", "SQL"],
-  },
-  {
-    title: "Cybersecurity & Privacy",
-    description: "Auditing compliance and protecting digital operations.",
-    icon: <Shield className="w-6 h-6 text-red-400" />,
-    iconColor: "bg-red-500/10",
-    borderColor: "group-hover:border-red-500/30",
-    skills: ["Cybersecurity", "Penetration Testing", "Incident Response", "Security Awareness", "AI Privacy Engineering"],
-  },
-  {
-    title: "Software Engineering",
-    description: "Building modern APIs and pipelines.",
-    icon: <Code className="w-6 h-6 text-amber-400" />,
-    iconColor: "bg-amber-500/10",
-    borderColor: "group-hover:border-amber-500/30",
-    skills: ["JavaScript", "HTML5", "CSS3", "REST API", "Apache Kafka", "GitHub Actions", "Software Testing", "Data Modeling"],
-  },
-];
+const getIcon = (title: string) => {
+  switch (title) {
+    case "Cloud & Architecture":
+      return {
+        icon: <Cloud className="w-6 h-6 text-blue-400" />,
+        iconColor: "bg-blue-500/10",
+        borderColor: "group-hover:border-blue-500/30",
+      };
+    case "AI & Machine Learning":
+      return {
+        icon: <Cpu className="w-6 h-6 text-purple-400" />,
+        iconColor: "bg-purple-500/10",
+        borderColor: "group-hover:border-purple-500/30",
+      };
+    case "Data Science & Analytics":
+      return {
+        icon: <Database className="w-6 h-6 text-emerald-400" />,
+        iconColor: "bg-emerald-500/10",
+        borderColor: "group-hover:border-emerald-500/30",
+      };
+    case "Cybersecurity & Privacy":
+      return {
+        icon: <Shield className="w-6 h-6 text-red-400" />,
+        iconColor: "bg-red-500/10",
+        borderColor: "group-hover:border-red-500/30",
+      };
+    default:
+      return {
+        icon: <Code className="w-6 h-6 text-amber-400" />,
+        iconColor: "bg-amber-500/10",
+        borderColor: "group-hover:border-amber-500/30",
+      };
+  }
+};
 
 export default function Skills() {
   return (
@@ -69,41 +53,44 @@ export default function Skills() {
 
         {/* Grouped Skills Columns */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {SKILL_GROUPS.map((group, idx) => (
-            <div
-              key={`${group.title}-${idx}`}
-              className={`glass-card p-10 rounded-none border border-white/10 flex flex-col justify-between group transition-all duration-300 bg-[#08080c] ${group.borderColor}`}
-            >
-              <div className="space-y-8">
-                {/* Header with icon and title */}
-                <div className="flex items-center gap-5">
-                  <div className={`p-3.5 rounded-none ${group.iconColor} flex-shrink-0 border border-white/5`}>
-                    {group.icon}
+          {SKILL_GROUPS.map((group, idx) => {
+            const config = getIcon(group.title);
+            return (
+              <div
+                key={`${group.title}-${idx}`}
+                className={`glass-card p-10 rounded-none border border-white/10 flex flex-col justify-between group transition-all duration-300 bg-[#08080c] ${config.borderColor}`}
+              >
+                <div className="space-y-8">
+                  {/* Header with icon and title */}
+                  <div className="flex items-center gap-5">
+                    <div className={`p-3.5 rounded-none ${config.iconColor} flex-shrink-0 border border-white/5`}>
+                      {config.icon}
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-bold text-white group-hover:text-gray-200 transition-colors">
+                        {group.title}
+                      </h3>
+                      <p className="text-xs text-gray-400 mt-1 leading-relaxed font-light">
+                        {group.description}
+                      </p>
+                    </div>
                   </div>
-                  <div>
-                    <h3 className="text-lg font-bold text-white group-hover:text-gray-200 transition-colors">
-                      {group.title}
-                    </h3>
-                    <p className="text-xs text-gray-400 mt-1 leading-relaxed font-light">
-                      {group.description}
-                    </p>
-                  </div>
-                </div>
 
-                {/* Skills tags cloud */}
-                <div className="flex flex-wrap gap-y-3.5 gap-x-2 pt-6 border-t border-white/5">
-                  {group.skills.map((skill) => (
-                    <span
-                      key={skill}
-                      className="inline-flex items-center text-xs px-3.5 py-1.5 bg-white/5 border border-white/5 text-gray-300 font-mono hover:bg-white/10 hover:text-white hover:border-white/10 transition-colors leading-none"
-                    >
-                      {skill}
-                    </span>
-                  ))}
+                  {/* Skills tags cloud */}
+                  <div className="flex flex-wrap gap-y-3.5 gap-x-2 pt-6 border-t border-white/5">
+                    {group.skills.map((skill) => (
+                      <span
+                        key={skill}
+                        className="inline-flex items-center text-xs px-3.5 py-1.5 bg-white/5 border border-white/5 text-gray-300 font-mono hover:bg-white/10 hover:text-white hover:border-white/10 transition-colors leading-none"
+                      >
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>

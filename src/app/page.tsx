@@ -10,6 +10,10 @@ import Experience from "./components/Experience";
 import ScrollToTop from "./components/ScrollToTop";
 import { Award, Code2, ArrowRight, ExternalLink, Hammer, Music, FolderGit } from "lucide-react";
 
+// Centralized Data Imports
+import { PROJECTS, Project } from "../data/projects";
+import { CERTIFICATIONS } from "../data/certifications";
+
 const GithubIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg
     viewBox="0 0 24 24"
@@ -25,66 +29,21 @@ const GithubIcon = (props: React.SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
-// Factual finished projects showcased as Featured
-const FEATURED_PROJECTS = [
-  {
-    name: "EcoTrace — Carbon Footprint Platform",
-    description: "A personal carbon footprint tracking platform built with HTML/CSS/JS. Features an interactive dashboard, activity logging, Chart.js analytics, AI coaching, and offline caching via localStorage.",
-    tags: ["HTML5", "CSS3", "JavaScript", "Chart.js"],
-    githubUrl: "https://github.com/Saatvik-G/Carbon-Footprint-Awareness-Platform",
-    liveUrl: "https://saatvik-g.github.io/Carbon-Footprint-Awareness-Platform/",
-    gradient: "from-emerald-500/20 via-teal-500/10 to-transparent",
-    icon: <FolderGit className="w-8 h-8 text-emerald-400" />
-  },
-  {
-    name: "Plagiarism Checker",
-    description: "An algorithm-driven text analysis tool calculating document similarity ratios using TF-IDF vectorization and cosine similarity to compare multiple files and flag similarities.",
-    tags: ["Python", "NLTK", "Flask", "NLP"],
-    githubUrl: "https://github.com/Saatvik-G/Plagiarism-Checker",
-    gradient: "from-red-500/20 via-amber-500/10 to-transparent",
-    icon: <FolderGit className="w-8 h-8 text-red-400" />
-  },
-  {
-    name: "Task Tracker Board",
-    description: "An interactive task workspace with columns, categorization, status toggles, priority tags, and statistics dashboards. Keeps data synced locally for seamless client-side planning.",
-    tags: ["React", "TypeScript", "Tailwind CSS", "LocalStorage"],
-    githubUrl: "https://github.com/Saatvik-G",
-    gradient: "from-cyan-500/20 via-blue-500/10 to-transparent",
-    icon: <FolderGit className="w-8 h-8 text-cyan-400" />
-  }
-];
-
-// Factual in-progress brainstorming projects
-const BRAINSTORMING_PROJECTS = [
-  {
-    name: "Jack&Trades",
-    description: "An AI ecosystem for cross-disciplinary discovery, currently being actively built with Next.js, TypeScript, Tailwind CSS, and the Gemini API, following a six-phase roadmap.",
-    tags: ["Next.js", "TypeScript", "Gemini API"],
-    githubUrl: "https://github.com/Saatvik-G/Jack-Trades.git",
-    gradient: "from-blue-500/20 via-indigo-500/10 to-transparent",
-    icon: <Hammer className="w-8 h-8 text-blue-400" />,
-    roadmap: "Phase 1: Architecture Development"
-  },
-  {
-    name: "EchoVerse (Music Recommendation)",
-    description: "An AI-powered music recommendation app (no audio playback) using the Last.fm API, MusicBrainz, and the OpenAI API, being built in three sequential phases.",
-    tags: ["OpenAI API", "Last.fm API", "MusicBrainz API"],
-    githubUrl: "https://github.com/Saatvik-G/Music-Recommendation.git",
-    gradient: "from-purple-500/20 via-pink-500/10 to-transparent",
-    icon: <Music className="w-8 h-8 text-purple-400" />,
-    roadmap: "Phase 1: API Integrations"
-  }
-];
-
-const HIGHLIGHT_CERTS = [
-  { title: "Google Cloud Generative AI Leader", issuer: "Infosys Springboard", date: "June 2026", cat: "AI & ML" },
-  { title: "Data Analysis with Python (300 hrs)", issuer: "freeCodeCamp", date: "April 2026", cat: "Data" },
-  { title: "AWS Solutions Architecture Job Simulation", issuer: "Forage", date: "January 2026", cat: "Cloud" }
-];
-
 export default function Home() {
   const [hasEntered, setHasEntered] = useState(false);
-  const [avatarError, setAvatarError] = useState(true); // default to initials visual fallback
+  const [avatarError, setAvatarError] = useState(true); // initials visual avatar as fallback
+
+  // Filter out Utilities from Homepage Featured list.
+  // Featured projects on home page is exactly: EcoTrace + Task Tracker Board.
+  const featuredShipped = PROJECTS.filter(
+    (p) => p.status === "Shipped" && (p.name.includes("EcoTrace") || p.name.includes("Task Tracker"))
+  );
+
+  // In-progress sandbox projects (Jack&Trades and EchoVerse)
+  const inProgress = PROJECTS.filter((p) => p.status === "In-Progress");
+
+  // Top 3 certifications highlights
+  const highlightedCerts = CERTIFICATIONS.slice(0, 3);
 
   return (
     <>
@@ -187,7 +146,7 @@ export default function Home() {
                 </div>
 
                 <div className="flex overflow-x-auto pb-10 pt-4 gap-8 no-scrollbar scroll-smooth snap-x snap-mandatory w-full">
-                  {FEATURED_PROJECTS.map((project, idx) => (
+                  {featuredShipped.map((project, idx) => (
                     <div
                       key={idx}
                       className="flex-shrink-0 w-[300px] sm:w-[380px] snap-start glass-card rounded-none border border-white/10 overflow-hidden flex flex-col justify-between shadow-2xl bg-[#08080c] hover:border-blue-500/20 transition-all duration-300"
@@ -212,7 +171,7 @@ export default function Home() {
                         </div>
                         <div className="flex items-center gap-3.5 z-10">
                           <div className="p-2 bg-black/40 border border-white/10">
-                            {project.icon}
+                            <FolderGit className="w-8 h-8 text-blue-400" />
                           </div>
                           <h3 className="text-base font-bold text-white truncate">{project.name.split(" — ")[0]}</h3>
                         </div>
@@ -244,7 +203,7 @@ export default function Home() {
                 </div>
 
                 <div className="grid md:grid-cols-2 gap-12">
-                  {BRAINSTORMING_PROJECTS.map((project, idx) => (
+                  {inProgress.map((project, idx) => (
                     <div
                       key={idx}
                       className="glass-card rounded-none border border-white/10 overflow-hidden flex flex-col justify-between shadow-2xl bg-[#08080c] hover:border-purple-500/20 transition-all duration-300 p-8 relative"
@@ -263,7 +222,11 @@ export default function Home() {
 
                         <div className="flex items-center gap-4">
                           <div className="p-2.5 bg-white/5 border border-white/5">
-                            {project.icon}
+                            {project.name.includes("Jack") ? (
+                              <Hammer className="w-8 h-8 text-blue-400" />
+                            ) : (
+                              <Music className="w-8 h-8 text-purple-400" />
+                            )}
                           </div>
                           <h3 className="text-lg font-bold text-white">{project.name}</h3>
                         </div>
@@ -306,7 +269,7 @@ export default function Home() {
                 </div>
 
                 <div className="flex overflow-x-auto pb-10 pt-4 gap-8 no-scrollbar scroll-smooth snap-x snap-mandatory w-full">
-                  {HIGHLIGHT_CERTS.map((cert, idx) => (
+                  {highlightedCerts.map((cert, idx) => (
                     <div
                       key={idx}
                       className="relative flex-shrink-0 w-[280px] sm:w-[340px] snap-start glass-card rounded-none border border-white/10 p-6 flex flex-col justify-between shadow-2xl bg-[#08080c] hover:border-blue-500/20 transition-all duration-300 h-[320px]"
@@ -317,7 +280,7 @@ export default function Home() {
                       <div className="absolute bottom-2 right-2 w-2 h-2 border-b border-r border-white/20" />
 
                       <div className="flex items-center justify-between">
-                        <span className="text-[9px] font-mono text-purple-400 bg-purple-500/10 border border-purple-500/20 px-2 py-0.5 uppercase tracking-wider">{cert.cat}</span>
+                        <span className="text-[9px] font-mono text-purple-400 bg-purple-500/10 border border-purple-500/20 px-2 py-0.5 uppercase tracking-wider">{cert.category}</span>
                         <Award className="w-5 h-5 text-gray-500" />
                       </div>
 

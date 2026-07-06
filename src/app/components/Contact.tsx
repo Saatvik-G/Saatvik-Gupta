@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Mail, Copy, Check, MessageSquare } from "lucide-react";
+import { Mail, Copy, Check, MessageSquare, MapPin } from "lucide-react";
 
 const LinkedinIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg
@@ -75,7 +75,7 @@ export default function Contact() {
               <p className="text-sm text-gray-400 font-light">Direct inquiries, project collaboration, or internship opportunities.</p>
               
               <div className="flex items-center justify-between gap-3 p-4 bg-white/5 rounded-none border border-white/5 font-mono text-xs md:text-sm text-gray-300">
-                <span className="truncate">[add your email]</span>
+                <span className="truncate">{emailAddress}</span>
                 <button
                   onClick={handleCopyEmail}
                   className="text-gray-400 hover:text-white transition-colors cursor-pointer flex-shrink-0"
@@ -125,14 +125,16 @@ export default function Contact() {
               </div>
             </div>
 
-            <div className="mt-8 w-full text-xs text-gray-500 italic">
-              "Bengaluru, Karnataka, India"
+            {/* Restyled Location Line as a Pill Badge */}
+            <div className="mt-8 flex items-center justify-center gap-2 bg-white/5 border border-white/5 px-4 py-2 rounded-full text-xs text-gray-400 font-mono">
+              <MapPin className="w-3.5 h-3.5 text-purple-400" />
+              <span>Bengaluru, Karnataka, India</span>
             </div>
           </div>
         </div>
 
-        {/* Footer info */}
-        <div className="mt-48 pt-12 border-t border-white/5 text-xs text-gray-500">
+        {/* Footer info updated to use consistent mt-24 spacing */}
+        <div className="mt-24 pt-12 border-t border-white/5 text-xs text-gray-500">
           <p>© {new Date().getFullYear()} Saatvik Gupta. All rights reserved.</p>
           <p className="mt-1 font-mono text-[10px]">Built with Next.js, Tailwind CSS, & Three.js</p>
         </div>

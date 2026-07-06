@@ -48,6 +48,11 @@ export default function Hero() {
           </span>
         </h1>
 
+        {/* Specialization Subtitle */}
+        <p className="text-sm md:text-base font-mono uppercase tracking-[0.2em] text-blue-400 mb-8 max-w-2xl mx-auto">
+          CS Student | Cloud • AI • Data Analytics • Cybersecurity
+        </p>
+
         {/* Philosophy with expanded margins */}
         <p className="text-xl sm:text-2xl text-gray-300 max-w-2xl mx-auto italic mb-16 leading-relaxed tracking-wide">
           "Curiosity is my compass. <br className="sm:hidden" /> Consistency is my habit."

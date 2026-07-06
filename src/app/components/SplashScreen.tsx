@@ -51,13 +51,13 @@ export default function SplashScreen({ onEnter }: SplashScreenProps) {
       <div className={`relative z-10 text-center space-y-8 max-w-md px-6 select-none transition-all duration-700 ${
         triggerBeam ? "scale-95 opacity-50 blur-sm" : ""
       }`}>
-        <div className="space-y-3">
-          <h1 className="text-4xl md:text-5xl font-extrabold tracking-widest bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-500 bg-clip-text text-transparent">
-            SAATVIK GUPTA
-          </h1>
-          <p className="text-xs md:text-sm font-semibold tracking-[0.25em] text-gray-400 uppercase">
-            Curiosity • Consistency
-          </p>
+        <div className="flex flex-col items-center justify-center space-y-4">
+          <div className="w-20 h-20 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center border border-white/20 shadow-lg shadow-purple-500/20">
+            <span className="text-2xl font-extrabold text-white tracking-widest font-mono">SG</span>
+          </div>
+          <span className="text-[10px] font-mono tracking-[0.25em] text-gray-400 uppercase">
+            Saatvik Gupta
+          </span>
         </div>
 
         <button
