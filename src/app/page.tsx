@@ -164,7 +164,7 @@ export default function Home() {
                   </div>
 
                   <div className="p-5 space-y-4 flex-1 flex flex-col justify-between relative z-10">
-                    <p className="text-gray-300 text-xs sm:text-sm leading-relaxed line-clamp-4 font-light">{project.description}</p>
+                    <p className="text-gray-300 text-xs sm:text-sm leading-loose line-clamp-4 font-light">{project.description}</p>
                     <div className="flex flex-wrap gap-2 pt-3 border-t border-white/5">
                       {project.tags.map((tag) => (
                         <span key={tag} className="text-[9px] px-2 py-0.5 bg-white/5 border border-white/5 text-gray-400 font-mono">{tag}</span>

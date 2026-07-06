@@ -194,7 +194,7 @@ export default function ProjectsPage() {
 
                 {/* Box Content */}
                 <div className="p-6 space-y-6 flex-1 flex flex-col justify-between">
-                  <p className="text-gray-300 text-sm leading-relaxed line-clamp-4 font-light">
+                  <p className="text-gray-300 text-sm leading-loose line-clamp-4 font-light">
                     {project.description}
                   </p>
 
