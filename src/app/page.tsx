@@ -1,25 +1,16 @@
 "use client";
 
-import React, { useState } from "react";
-import Link from "next/link";
-import Image from "next/image";
-import SplashScreen from "./components/SplashScreen";
-import Navbar from "./components/Navbar";
-import Hero from "./components/Hero";
-import Experience from "./components/Experience";
-import ScrollToTop from "./components/ScrollToTop";
-import ProjectModal from "./components/ProjectModal";
-import { Award, Code2, ArrowRight, ExternalLink, Hammer, Music, FolderGit, MapPin, Mail, MessageSquare, Layers } from "lucide-react";
-
-// Centralized JSON Import
+import React from "react";
+import { motion } from "framer-motion";
 import resumeData from "../data/resumeData.json";
 
+// Inline Icons to prevent external import issues
 const GithubIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
-    strokeWidth="2"
+    strokeWidth="1.5"
     strokeLinecap="round"
     strokeLinejoin="round"
     {...props}
@@ -29,299 +20,426 @@ const GithubIcon = (props: React.SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
-export default function Home() {
-  const [hasEntered, setHasEntered] = useState(false);
-  const [avatarError, setAvatarError] = useState(true);
-  
-  // Modal states for progressive disclosure
-  const [selectedProj, setSelectedProj] = useState<any | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+const ExternalLinkIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    {...props}
+  >
+    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+    <polyline points="15 3 21 3 21 9" />
+    <line x1="10" y1="14" x2="21" y2="3" />
+  </svg>
+);
 
-  // Parse centralized projects data
-  const homepageProjects = resumeData.projects.filter(
-    (p) => p.status === "Shipped" && (p.name.includes("EcoTrace") || p.name.includes("Task Tracker"))
+const LinkedinIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    {...props}
+  >
+    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+    <rect width="4" height="12" x="2" y="9" />
+    <circle cx="4" cy="4" r="2" />
+  </svg>
+);
+
+const ArrowRightIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    {...props}
+  >
+    <line x1="5" y1="12" x2="19" y2="12" />
+    <polyline points="12 5 19 12 12 19" />
+  </svg>
+);
+
+const revealVariants = {
+  hidden: { opacity: 0, y: 40 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.9, ease: [0.16, 1, 0.3, 1] as const } }
+};
+
+export default function Home() {
+  const finishedProjects = resumeData.projects.filter(
+    (p) => p.status === "Shipped"
   );
   
-  const sandboxProjects = resumeData.projects.filter((p) => p.status === "In-Progress");
-  
-  const highlightedCerts = resumeData.certifications.slice(0, 3);
+  const inProgressProjects = resumeData.projects.filter(
+    (p) => p.status === "In-Progress"
+  );
 
-  const openProjectDetails = (proj: any) => {
-    setSelectedProj(proj);
-    setIsModalOpen(true);
+  const handleScroll = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
+    e.preventDefault();
+    const element = document.getElementById(targetId);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
   };
 
   return (
-    <>
-      {/* 3D Splash Screen Portal */}
-      {!hasEntered ? (
-        <SplashScreen onEnter={() => setHasEntered(true)} />
-      ) : (
-        <>
-          <Navbar />
-          <main className="flex-1 w-full bg-[#030303] opacity-0 animate-fade-in animate-fill-forwards" style={{ animationDelay: "100ms" }}>
-            
-            {/* Hero Splash Header */}
-            <Hero />
+    <div className="min-h-screen bg-[#030303] text-gray-100 selection:bg-blue-500/20 selection:text-white font-sans antialiased overflow-x-hidden">
+      
+      {/* Restrained Luxury Sticky Navbar */}
+      <header className="fixed top-0 left-0 right-0 z-50 bg-[#030303]/65 backdrop-blur-md border-b border-white/5">
+        <div className="max-w-6xl mx-auto px-6 h-20 flex items-center justify-between">
+          <span className="font-mono text-xs tracking-[0.3em] text-white/50 select-none">
+            SG // CORE
+          </span>
+          <nav className="hidden md:flex gap-8 font-mono text-[10px] uppercase tracking-[0.2em] text-gray-400">
+            <a href="#about" onClick={(e) => handleScroll(e, "about")} className="hover:text-blue-500 transition-colors">01 / About</a>
+            <a href="#skills" onClick={(e) => handleScroll(e, "skills")} className="hover:text-blue-500 transition-colors">02 / Skills</a>
+            <a href="#experience" onClick={(e) => handleScroll(e, "experience")} className="hover:text-blue-500 transition-colors">03 / Experience</a>
+            <a href="#projects" onClick={(e) => handleScroll(e, "projects")} className="hover:text-blue-500 transition-colors">04 / Projects</a>
+            <a href="#certifications" onClick={(e) => handleScroll(e, "certifications")} className="hover:text-blue-500 transition-colors">05 / Certs</a>
+            <a href="#contact" onClick={(e) => handleScroll(e, "contact")} className="hover:text-blue-500 transition-colors">06 / Contact</a>
+          </nav>
+        </div>
+      </header>
 
-            {/* Split-Pane Dashboard Container */}
-            <div className="max-w-7xl mx-auto px-6 md:px-12 py-24 grid lg:grid-cols-3 gap-16 items-start">
-              
-              {/* LEFT PANE: Sticky Bio, Metrics, & Contact Panel */}
-              <div className="lg:sticky lg:top-28 space-y-10 lg:pr-6">
+      {/* Chapters feed */}
+      <div className="max-w-6xl mx-auto px-6 space-y-12">
+        
+        {/* CHAPTER 01: HERO */}
+        <motion.section
+          id="hero"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          variants={revealVariants}
+          className="min-h-screen flex flex-col justify-center items-start text-left relative pt-20"
+        >
+          {/* Subtle top indicator */}
+          <div className="font-mono text-[10px] tracking-[0.3em] text-blue-500 uppercase mb-8">
+            // INDEX // SAATVIK GUPTA
+          </div>
+          
+          {/* Nike scale headline */}
+          <h1 className="text-6xl sm:text-8xl md:text-9xl font-black tracking-tighter text-white uppercase leading-none mb-8 select-none">
+            Saatvik
+            <br />
+            Gupta
+          </h1>
+
+          {/* Understated title details */}
+          <p className="text-xs sm:text-sm font-mono text-gray-400 uppercase tracking-[0.25em] mb-6 pl-2">
+            {resumeData.profile.subtitle}
+          </p>
+
+          <p className="text-lg sm:text-xl text-gray-400 max-w-xl italic mb-12 font-light leading-relaxed pl-2">
+            "{resumeData.profile.tagline}"
+          </p>
+
+          {/* Confident single CTA */}
+          <div className="pl-2">
+            <a
+              href="#projects"
+              onClick={(e) => handleScroll(e, "projects")}
+              className="group inline-flex items-center gap-3 text-xs font-mono uppercase tracking-[0.2em] text-white hover:text-blue-500 transition-colors relative py-2"
+            >
+              <span>Explore Specifications</span>
+              <ArrowRightIcon className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              <span className="absolute bottom-0 left-0 w-full h-[1px] bg-white group-hover:bg-blue-500 transition-colors" />
+            </a>
+          </div>
+        </motion.section>
+
+        {/* Subtle transition divider */}
+        <div className="h-[1px] w-full bg-white/5" />
+
+        {/* CHAPTER 02: ABOUT */}
+        <motion.section
+          id="about"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          variants={revealVariants}
+          className="min-h-screen flex flex-col justify-center items-center text-center relative py-24"
+        >
+          <div className="font-mono text-[10px] tracking-[0.3em] text-blue-500 uppercase mb-12">
+            01 / BIOGRAPHY
+          </div>
+          
+          {/* Centered constrained luxury-style bio block */}
+          <div className="max-w-3xl mx-auto space-y-8">
+            <p className="text-xl sm:text-2xl md:text-3xl text-gray-200 leading-relaxed font-light font-sans tracking-tight">
+              {resumeData.profile.bio}
+            </p>
+          </div>
+        </motion.section>
+
+        {/* Subtle transition divider */}
+        <div className="h-[1px] w-full bg-white/5" />
+
+        {/* CHAPTER 03: SKILLS */}
+        <motion.section
+          id="skills"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          variants={revealVariants}
+          className="min-h-screen flex flex-col justify-center items-start relative py-24"
+        >
+          <div className="font-mono text-[10px] tracking-[0.3em] text-blue-500 uppercase mb-16">
+            02 / SKILL CLASSIFICATIONS
+          </div>
+
+          {/* Vercel clean grid */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 w-full">
+            {resumeData.skills.map((group, i) => (
+              <div key={i} className="p-8 border border-white/5 bg-[#08080a]/40 relative">
+                <div className="absolute top-0 left-0 w-2 h-[1px] bg-blue-500" />
+                <div className="absolute top-0 left-0 w-[1px] h-2 bg-blue-500" />
                 
-                {/* Visual Avatar & Name */}
-                <div className="space-y-6">
-                  <div className="relative w-28 h-28 glass-card border border-white/10 flex items-center justify-center overflow-hidden bg-[#08080c]">
-                    <div className="absolute inset-1.5 border border-white/5 border-dashed pointer-events-none" />
-                    {!avatarError ? (
-                      <div className="relative w-full h-full">
-                        <Image
-                          src="/portrait.jpg"
-                          alt={resumeData.profile.name}
-                          fill
-                          className="object-cover"
-                          onError={() => setAvatarError(true)}
-                        />
-                      </div>
-                    ) : (
-                      <div className="w-16 h-16 rounded-full bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-600 flex items-center justify-center shadow-lg border border-white/15">
-                        <span className="text-xl font-extrabold text-white tracking-widest font-mono">SG</span>
-                      </div>
-                    )}
-                  </div>
-                  <div>
-                    <h1 className="text-2xl font-extrabold text-white tracking-tight">{resumeData.profile.name}</h1>
-                    <p className="text-xs font-mono text-blue-400 mt-2 tracking-wider leading-relaxed">{resumeData.profile.subtitle}</p>
-                  </div>
-                </div>
-
-                {/* Left side quick anchors */}
-                <nav className="hidden lg:flex flex-col gap-3 font-mono text-xs text-gray-500 uppercase tracking-widest pt-4 border-t border-white/5">
-                  <a href="#experience" className="hover:text-blue-400 transition-colors flex items-center gap-2">
-                    <span>↳</span> Experience Timeline
-                  </a>
-                  <a href="#featured-projects" className="hover:text-blue-400 transition-colors flex items-center gap-2">
-                    <span>↳</span> Featured Shipped
-                  </a>
-                  <a href="#sandbox" className="hover:text-blue-400 transition-colors flex items-center gap-2">
-                    <span>↳</span> Brainstorming Sandbox
-                  </a>
-                  <a href="#top-certifications" className="hover:text-blue-400 transition-colors flex items-center gap-2">
-                    <span>↳</span> Certifications
-                  </a>
-                </nav>
-
-                {/* Key Metrics Dashboard */}
-                <div className="grid grid-cols-2 gap-4 pt-6 border-t border-white/5">
-                  {resumeData.metrics.map((metric, i) => (
-                    <div key={i} className="bg-[#08080c] border border-white/5 p-4 flex flex-col justify-between">
-                      <div className="text-xl font-extrabold text-white tracking-tight font-mono">{metric.value}</div>
-                      <div className="text-[10px] text-gray-400 font-mono uppercase tracking-wider mt-1">{metric.label}</div>
-                    </div>
+                <h3 className="text-xs font-mono font-bold uppercase tracking-[0.2em] text-white mb-6">
+                  {group.title}
+                </h3>
+                <div className="flex flex-wrap gap-2">
+                  {group.skills.map((item, idx) => (
+                    <span
+                      key={idx}
+                      className="px-2.5 py-1 bg-white/5 border border-white/5 text-gray-400 text-[10px] font-mono tracking-wider"
+                    >
+                      {item}
+                    </span>
                   ))}
                 </div>
+              </div>
+            ))}
+          </div>
+        </motion.section>
 
-                {/* Quick Info & Contact */}
-                <div className="space-y-4 pt-6 border-t border-white/5 text-xs text-gray-400 font-mono">
-                  <div className="flex items-center gap-2.5">
-                    <MapPin className="w-4 h-4 text-purple-400" />
-                    <span>{resumeData.profile.location}</span>
-                  </div>
-                  <div className="flex items-center gap-2.5">
-                    <Mail className="w-4 h-4 text-blue-400" />
-                    <a href={`mailto:${resumeData.profile.email}`} className="hover:text-white transition-colors">{resumeData.profile.email}</a>
-                  </div>
-                  <div className="flex gap-4 pt-2">
-                    <a href={resumeData.profile.linkedin} target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors flex items-center gap-1.5">
-                      <MessageSquare className="w-4 h-4 text-blue-500" /> LinkedIn
-                    </a>
-                    <a href={resumeData.profile.github} target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors flex items-center gap-1.5">
-                      <GithubIcon className="w-4 h-4 text-white" /> GitHub
-                    </a>
-                  </div>
+        {/* Subtle transition divider */}
+        <div className="h-[1px] w-full bg-white/5" />
+
+        {/* CHAPTER 04: EXPERIENCE */}
+        <motion.section
+          id="experience"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          variants={revealVariants}
+          className="min-h-screen flex flex-col justify-center items-start relative py-24"
+        >
+          <div className="font-mono text-[10px] tracking-[0.3em] text-blue-500 uppercase mb-16">
+            03 / EXPERIENCE SPEC SHEET
+          </div>
+
+          {/* Koenigsegg spec timelines format */}
+          {resumeData.experience.map((exp, idx) => (
+            <div key={idx} className="w-full border border-white/5 bg-[#08080a]/40 p-8 sm:p-12 relative">
+              <div className="absolute top-0 left-0 w-4 h-[1px] bg-blue-500" />
+              <div className="absolute top-0 left-0 w-[1px] h-4 bg-blue-500" />
+              <div className="absolute bottom-0 right-0 w-4 h-[1px] bg-blue-500" />
+              <div className="absolute bottom-0 right-0 w-[1px] h-4 bg-blue-500" />
+
+              <div className="grid md:grid-cols-3 gap-8">
+                <div className="space-y-2">
+                  <span className="font-mono text-[10px] text-gray-500 uppercase tracking-widest">SYSTEM ROLE //</span>
+                  <h3 className="text-xl font-bold text-white tracking-tight">{exp.role}</h3>
                 </div>
-
+                <div className="space-y-2">
+                  <span className="font-mono text-[10px] text-gray-500 uppercase tracking-widest">ORGANIZATION //</span>
+                  <h4 className="text-base font-semibold text-gray-300">{exp.company}</h4>
+                </div>
+                <div className="space-y-2">
+                  <span className="font-mono text-[10px] text-gray-500 uppercase tracking-widest">DURATION PERIOD //</span>
+                  <p className="text-sm font-mono text-blue-400">{exp.duration}</p>
+                </div>
               </div>
 
-              {/* RIGHT PANE: Scrollable Feed */}
-              <div className="lg:col-span-2 space-y-24">
-                
-                {/* 1. About Bio text */}
-                <section id="bio" className="space-y-6">
-                  <div>
-                    <p className="font-mono text-xs text-blue-400 uppercase tracking-widest">// Profile Bio</p>
-                    <h2 className="text-xl font-extrabold text-white uppercase tracking-wider font-mono mt-2">Executive Summary</h2>
-                  </div>
-                  <p className="text-gray-300 leading-loose text-base font-light">
-                    {resumeData.profile.bio}
-                  </p>
-                </section>
-
-                <div className="border-t border-white/5 w-full" />
-
-                {/* 2. Experience Section */}
-                <section id="experience">
-                  <Experience />
-                </section>
-
-                <div className="border-t border-white/5 w-full" />
-
-                {/* 3. Featured Shipped Projects */}
-                <section id="featured-projects" className="space-y-12">
-                  <div className="flex items-end justify-between gap-6">
-                    <div>
-                      <p className="font-mono text-xs text-emerald-400 uppercase tracking-widest">// Featured Shipped</p>
-                      <h2 className="text-2xl font-extrabold tracking-tight text-white mt-3">Selected Projects</h2>
-                    </div>
-                    <Link
-                      href="/projects"
-                      className="group inline-flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider text-blue-400 hover:text-white transition-colors"
-                    >
-                      All Projects
-                      <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-                    </Link>
-                  </div>
-
-                  {/* Clean side-by-side grid */}
-                  <div className="grid md:grid-cols-2 gap-8">
-                    {homepageProjects.map((project, idx) => (
-                      <div
-                        key={idx}
-                        onClick={() => openProjectDetails(project)}
-                        className="glass-card rounded-none border border-white/10 overflow-hidden flex flex-col justify-between shadow-2xl bg-[#08080c] hover:border-blue-500/20 transition-all duration-300 cursor-pointer p-6 relative group"
-                      >
-                        <div className="absolute inset-2 border border-white/5 border-dashed pointer-events-none" />
-                        
-                        <div className="space-y-4">
-                          <div className="flex items-center justify-between">
-                            <span className="text-[9px] font-mono text-gray-500">// FEATURED {idx + 1}</span>
-                            <FolderGit className="w-5 h-5 text-blue-400 group-hover:scale-110 transition-transform duration-300" />
-                          </div>
-                          <h3 className="text-lg font-bold text-white leading-tight">{project.name.split(" — ")[0]}</h3>
-                          <p className="text-gray-300 text-xs sm:text-sm leading-loose line-clamp-3 font-light">{project.description}</p>
-                        </div>
-
-                        <div className="flex flex-wrap gap-2 pt-4 mt-6 border-t border-white/5 z-10">
-                          {project.tags.map((tag) => (
-                            <span key={tag} className="text-[9px] px-2 py-0.5 bg-white/5 border border-white/5 text-gray-400 font-mono">{tag}</span>
-                          ))}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </section>
-
-                <div className="border-t border-white/5 w-full" />
-
-                {/* 4. Brainstorming sandbox */}
-                <section id="sandbox" className="space-y-12">
-                  <div>
-                    <p className="font-mono text-xs text-blue-400 uppercase tracking-widest">// In-Progress Sandbox</p>
-                    <h2 className="text-2xl font-extrabold tracking-tight text-white mt-3">Currently Building</h2>
-                  </div>
-
-                  <div className="grid md:grid-cols-2 gap-8">
-                    {sandboxProjects.map((project, idx) => (
-                      <div
-                        key={idx}
-                        onClick={() => openProjectDetails(project)}
-                        className="glass-card rounded-none border border-white/10 overflow-hidden flex flex-col justify-between shadow-2xl bg-[#08080c] hover:border-purple-500/20 transition-all duration-300 p-6 relative cursor-pointer group"
-                      >
-                        <div className="absolute inset-2 border border-white/5 border-dashed pointer-events-none" />
-
-                        <div className="space-y-4 z-10">
-                          <div className="flex items-center justify-between">
-                            <span className="text-[9px] font-mono text-purple-400 bg-purple-500/10 border border-purple-500/25 px-2.5 py-1 uppercase tracking-wider font-bold">
-                              {project.roadmap}
-                            </span>
-                            <Hammer className="w-5 h-5 text-purple-400 group-hover:scale-110 transition-transform duration-300" />
-                          </div>
-                          <h3 className="text-lg font-bold text-white">{project.name}</h3>
-                          <p className="text-gray-300 text-xs sm:text-sm leading-loose line-clamp-3 font-light">
-                            {project.description}
-                          </p>
-                        </div>
-
-                        <div className="flex flex-wrap gap-2 pt-4 mt-6 border-t border-white/5 z-10">
-                          {project.tags.map((tag) => (
-                            <span key={tag} className="text-[9px] px-2 py-0.5 bg-white/5 border border-white/5 text-gray-400 font-mono">{tag}</span>
-                          ))}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </section>
-
-                <div className="border-t border-white/5 w-full" />
-
-                {/* 5. Top Certifications */}
-                <section id="top-certifications" className="space-y-12">
-                  <div className="flex items-end justify-between gap-6">
-                    <div>
-                      <p className="font-mono text-xs text-blue-400 uppercase tracking-widest">// Credential Highlights</p>
-                      <h2 className="text-2xl font-extrabold tracking-tight text-white mt-3">Top Certifications</h2>
-                    </div>
-                    <Link
-                      href="/certifications"
-                      className="group inline-flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider text-blue-400 hover:text-white transition-colors"
-                    >
-                      All Certifications
-                      <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-                    </Link>
-                  </div>
-
-                  <div className="grid md:grid-cols-3 gap-6">
-                    {highlightedCerts.map((cert, idx) => (
-                      <div
-                        key={idx}
-                        className="relative glass-card p-5 rounded-none border border-white/10 flex flex-col justify-between shadow-2xl bg-[#08080c] hover:border-blue-500/20 transition-all duration-300 h-[260px]"
-                      >
-                        <div className="absolute top-2 left-2 w-2 h-2 border-t border-l border-white/20" />
-                        <div className="absolute top-2 right-2 w-2 h-2 border-t border-r border-white/20" />
-                        <div className="absolute bottom-2 left-2 w-2 h-2 border-b border-l border-white/20" />
-                        <div className="absolute bottom-2 right-2 w-2 h-2 border-b border-r border-white/20" />
-
-                        <div className="flex items-center justify-between">
-                          <span className="text-[9px] font-mono text-purple-400 bg-purple-500/10 border border-purple-500/20 px-2 py-0.5 uppercase tracking-wider font-bold">{cert.category}</span>
-                          <Award className="w-4.5 h-4.5 text-gray-500" />
-                        </div>
-
-                        {/* Cert Seal in the middle */}
-                        <div className="flex justify-center items-center py-2 opacity-35">
-                          <svg className="w-12 h-12 text-gray-600" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="50" cy="50" r="38" stroke="currentColor" strokeWidth="1" strokeDasharray="2 2" />
-                            <path d="M50 28 L54 38 L65 38 L56 45 L60 56 L50 49 L40 56 L44 45 L35 38 L46 38 Z" fill="currentColor" />
-                            <path d="M43 72 L37 88 L45 82 L53 88 L47 72" fill="currentColor" opacity="0.5" />
-                            <path d="M57 72 L51 88 L59 82 L67 88 L61 72" fill="currentColor" opacity="0.5" />
-                          </svg>
-                        </div>
-
-                        <div className="space-y-2">
-                          <h3 className="font-bold text-gray-200 text-xs line-clamp-2 leading-snug">{cert.title}</h3>
-                          <div className="pt-2 border-t border-white/5 flex items-center justify-between text-[8px] font-mono text-gray-500">
-                            <span>{cert.issuer}</span>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </section>
-
+              <div className="mt-8 pt-8 border-t border-white/5">
+                <p className="text-gray-300 text-sm sm:text-base leading-relaxed font-light">
+                  {exp.description}
+                </p>
               </div>
             </div>
+          ))}
+        </motion.section>
 
-            {/* Reusable Progressive Disclosure Modal Dialog */}
-            <ProjectModal
-              isOpen={isModalOpen}
-              onClose={() => setIsModalOpen(false)}
-              project={selectedProj}
-            />
+        {/* Subtle transition divider */}
+        <div className="h-[1px] w-full bg-white/5" />
 
-          </main>
-          <ScrollToTop />
-        </>
-      )}
-    </>
+        {/* CHAPTER 05: PROJECTS */}
+        <section id="projects" className="space-y-24 py-24">
+          <div className="font-mono text-[10px] tracking-[0.3em] text-blue-500 uppercase">
+            04 / SELECTED WORKS & SANDBOX
+          </div>
+
+          {/* Finished Projects Row */}
+          <div className="space-y-12">
+            <div className="font-mono text-[10px] text-gray-500 uppercase tracking-[0.2em]">// COMPLETED PLATFORMS</div>
+            <div className="grid md:grid-cols-2 gap-12">
+              {finishedProjects.map((project, i) => (
+                <motion.div
+                  key={i}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true, margin: "-100px" }}
+                  variants={revealVariants}
+                  className="p-8 border border-white/10 bg-[#08080c] relative flex flex-col justify-between h-[300px] hover:border-blue-500/30 transition-all duration-500"
+                >
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <span className="font-mono text-[9px] text-gray-500">// SPECS {i + 1}</span>
+                      <div className="flex gap-4">
+                        <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors" aria-label="GitHub">
+                          <GithubIcon className="w-4 h-4" />
+                        </a>
+                        {project.liveUrl && (
+                          <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors" aria-label="Live Demo">
+                            <ExternalLinkIcon className="w-4 h-4" />
+                          </a>
+                        )}
+                      </div>
+                    </div>
+                    <h3 className="text-xl font-bold text-white tracking-tight">{project.name}</h3>
+                    <p className="text-gray-400 text-xs sm:text-sm leading-relaxed font-light line-clamp-3">
+                      {project.description}
+                    </p>
+                  </div>
+
+                  <div className="flex flex-wrap gap-2 pt-4 border-t border-white/5 font-mono text-[9px] text-blue-400">
+                    {project.tags.map((tag) => (
+                      <span key={tag} className="px-2 py-0.5 bg-blue-500/5 border border-blue-500/10 uppercase tracking-wider">{tag}</span>
+                    ))}
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+
+          {/* In-Progress Projects Row */}
+          <div className="space-y-12">
+            <div className="font-mono text-[10px] text-gray-500 uppercase tracking-[0.2em]">// IN PROGRESS DEVELOPMENT (OUTLINED DEMARCATORS)</div>
+            <div className="grid md:grid-cols-2 gap-12">
+              {inProgressProjects.map((project, i) => (
+                <motion.div
+                  key={i}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true, margin: "-100px" }}
+                  variants={revealVariants}
+                  className="p-8 border border-white/5 border-dashed bg-transparent relative flex flex-col justify-between h-[300px] hover:border-blue-500/20 opacity-60 hover:opacity-100 transition-all duration-500"
+                >
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <span className="font-mono text-[9px] text-gray-500">// ROADMAP {i + 1}</span>
+                      <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors" aria-label="GitHub">
+                        <GithubIcon className="w-4 h-4" />
+                      </a>
+                    </div>
+                    <h3 className="text-xl font-bold text-white tracking-tight">{project.name}</h3>
+                    <p className="text-gray-400 text-xs sm:text-sm leading-relaxed font-light line-clamp-3">
+                      {project.description}
+                    </p>
+                  </div>
+
+                  <div className="flex flex-wrap gap-2 pt-4 border-t border-white/5 font-mono text-[9px] text-gray-500">
+                    {project.tags.map((tag) => (
+                      <span key={tag} className="px-2 py-0.5 bg-white/5 border border-white/10 uppercase tracking-wider">{tag}</span>
+                    ))}
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Subtle transition divider */}
+        <div className="h-[1px] w-full bg-white/5" />
+
+        {/* CHAPTER 06: CERTIFICATIONS */}
+        <motion.section
+          id="certifications"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          variants={revealVariants}
+          className="min-h-screen flex flex-col justify-center items-start relative py-24"
+        >
+          <div className="font-mono text-[10px] tracking-[0.3em] text-blue-500 uppercase mb-16">
+            05 / CERTIFICATIONS DIRECTORY
+          </div>
+
+          <ul className="space-y-6 text-sm sm:text-base text-gray-300 leading-relaxed font-light pl-2 w-full">
+            {resumeData.certifications.map((cert, idx) => (
+              <li key={idx} className="flex items-start gap-4 py-3 border-b border-white/5">
+                <span className="text-blue-500 font-mono font-bold select-none">// {idx + 1}</span>
+                <span>{cert.title} — {cert.issuer} ({cert.date})</span>
+              </li>
+            ))}
+          </ul>
+        </motion.section>
+
+        {/* Subtle transition divider */}
+        <div className="h-[1px] w-full bg-white/5" />
+
+        {/* CHAPTER 07: CONTACT */}
+        <motion.section
+          id="contact"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          variants={revealVariants}
+          className="min-h-screen flex flex-col justify-center items-start relative py-24 pl-2"
+        >
+          <div className="font-mono text-[10px] tracking-[0.3em] text-blue-500 uppercase mb-12">
+            06 / CONNECTION
+          </div>
+
+          {/* Nike bold statement */}
+          <h2 className="text-5xl sm:text-7xl md:text-8xl font-black tracking-tighter text-white uppercase mb-8">
+            Let's build
+            <br />
+            something.
+          </h2>
+
+          <p className="text-gray-400 text-sm max-w-md font-light leading-relaxed mb-12">
+            {resumeData.profile.name} // Open to internships, collaborations, and opportunities.
+          </p>
+
+          <div className="space-y-6 font-mono text-xs sm:text-sm tracking-wider w-full max-w-xl">
+            <div className="flex flex-col sm:flex-row sm:items-center py-4 border-b border-white/5 gap-2">
+              <span className="text-gray-500 w-28">// EMAIL:</span>
+              <a href={`mailto:${resumeData.profile.email}`} className="text-white hover:text-blue-500 transition-colors">
+                {resumeData.profile.email}
+              </a>
+            </div>
+            <div className="flex flex-col sm:flex-row sm:items-center py-4 border-b border-white/5 gap-2">
+              <span className="text-gray-500 w-28">// LINKEDIN:</span>
+              <a href={resumeData.profile.linkedin} target="_blank" rel="noopener noreferrer" className="text-white hover:text-blue-500 transition-colors">
+                {resumeData.profile.linkedin.replace("https://", "")}
+              </a>
+            </div>
+            <div className="flex flex-col sm:flex-row sm:items-center py-4 border-b border-white/5 gap-2">
+              <span className="text-gray-500 w-28">// GITHUB:</span>
+              <a href={resumeData.profile.github} target="_blank" rel="noopener noreferrer" className="text-white hover:text-blue-500 transition-colors">
+                {resumeData.profile.github.replace("https://", "")}
+              </a>
+            </div>
+          </div>
+        </motion.section>
+
+        {/* Footer */}
+        <footer className="py-12 border-t border-white/5 text-[10px] font-mono text-gray-600 flex justify-between">
+          <span>© {new Date().getFullYear()} Saatvik Gupta.</span>
+          <span>LV • GTA VI • NIKE • VERCEL • KOENIGSEGG Synthesis</span>
+        </footer>
+
+      </div>
+    </div>
   );
 }

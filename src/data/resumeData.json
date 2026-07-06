@@ -29,15 +29,10 @@
   ],
   "experience": [
     {
-      "role": "AWS Intern",
-      "company": "Internship Studio",
+      "role": "Cloud Computing Intern — AWS Track",
+      "company": "Internship Studio (iStudio)",
       "duration": "February 2026 – April 2026",
-      "description": "Completed a 2-month AWS internship program gaining hands-on exposure to Amazon Web Services and cloud computing fundamentals.",
-      "points": [
-        "Provisioned and managed scalable cloud resources including Amazon EC2, Amazon S3, and AWS IAM roles.",
-        "Gained direct exposure to cloud network topologies, VPC configuration, and Solutions Architecture principles.",
-        "Built and deployed mock cloud infrastructure verifying best practices in security, load balancing, and high availability."
-      ]
+      "description": "Completed a 2-month cloud computing training program through Internship Studio, focused on AWS fundamentals — including EC2, S3, IAM, and core solutions architecture concepts."
     }
   ],
   "projects": [
