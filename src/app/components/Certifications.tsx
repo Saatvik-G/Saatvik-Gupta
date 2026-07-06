@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useRef } from "react";
-import { Award, Calendar, ChevronLeft, ChevronRight } from "lucide-react";
+import React, { useState } from "react";
+import { Award, Calendar, ChevronLeft, ChevronRight, Layers } from "lucide-react";
 
 interface Certification {
   title: string;
@@ -116,14 +116,14 @@ const CERTIFICATIONS: Certification[] = [
 ];
 
 export default function Certifications() {
-  const scrollRef = useRef<HTMLDivElement>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
 
-  const scroll = (direction: "left" | "right") => {
-    if (scrollRef.current) {
-      const { scrollLeft, clientWidth } = scrollRef.current;
-      const scrollTo = direction === "left" ? scrollLeft - clientWidth * 0.75 : scrollLeft + clientWidth * 0.75;
-      scrollRef.current.scrollTo({ left: scrollTo, behavior: "smooth" });
-    }
+  const nextCard = () => {
+    setActiveIndex((prev) => (prev + 1) % CERTIFICATIONS.length);
+  };
+
+  const prevCard = () => {
+    setActiveIndex((prev) => (prev - 1 + CERTIFICATIONS.length) % CERTIFICATIONS.length);
   };
 
   const getCategoryColor = (cat: string) => {
@@ -137,12 +137,10 @@ export default function Certifications() {
   };
 
   return (
-    <section id="certifications" className="py-32 relative overflow-hidden bg-[#050508]/30">
-      <div className="absolute top-1/3 right-10 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl -z-10" />
-
-      <div className="max-w-7xl mx-auto px-6 md:px-12">
+    <section id="certifications" className="py-20 relative overflow-hidden bg-transparent">
+      <div className="max-w-7xl mx-auto px-6 md:px-12 flex flex-col items-center">
         {/* Section Header */}
-        <div className="flex items-center justify-between mb-16">
+        <div className="w-full flex items-center justify-between mb-16">
           <div>
             <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight bg-gradient-to-r from-white via-gray-200 to-gray-400 bg-clip-text text-transparent">
               Certifications
@@ -150,63 +148,86 @@ export default function Certifications() {
             <div className="h-[3px] w-20 bg-gradient-to-r from-blue-500 to-purple-500 mt-3 rounded-full" />
           </div>
 
-          {/* Navigation Arrows */}
-          <div className="flex gap-2">
+          <div className="flex gap-2 z-10">
             <button
-              onClick={() => scroll("left")}
+              onClick={prevCard}
               className="p-3 rounded-full bg-white/5 border border-white/5 text-gray-400 hover:text-white hover:bg-white/10 transition-all cursor-pointer"
-              aria-label="Scroll left"
+              aria-label="Previous certification"
             >
               <ChevronLeft className="w-5 h-5" />
             </button>
             <button
-              onClick={() => scroll("right")}
+              onClick={nextCard}
               className="p-3 rounded-full bg-white/5 border border-white/5 text-gray-400 hover:text-white hover:bg-white/10 transition-all cursor-pointer"
-              aria-label="Scroll right"
+              aria-label="Next certification"
             >
               <ChevronRight className="w-5 h-5" />
             </button>
           </div>
         </div>
 
-        {/* Horizontal Scrolling Certifications Grid */}
-        <div
-          ref={scrollRef}
-          className="flex gap-6 overflow-x-auto pb-8 pt-4 scroll-smooth no-scrollbar snap-x snap-mandatory card-perspective"
-        >
-          {CERTIFICATIONS.map((cert, index) => (
-            <div
-              key={`${cert.title}-${index}`}
-              className="flex-shrink-0 w-[280px] sm:w-[320px] snap-start glass-card flex flex-col justify-between p-6 rounded-2xl border border-white/5 relative overflow-hidden group card-3d"
-            >
-              {/* Decorative accent corner */}
-              <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-blue-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+        {/* 3D Stacked Container */}
+        <div className="relative w-full max-w-[440px] h-[360px] flex items-center justify-center card-perspective">
+          {CERTIFICATIONS.map((cert, idx) => {
+            let offset = idx - activeIndex;
+            if (offset < 0) {
+              offset = offset + CERTIFICATIONS.length;
+            }
 
-              <div className="space-y-4">
-                {/* Category & Icon */}
-                <div className="flex items-center justify-between">
-                  <span className={`text-[10px] px-2.5 py-1 rounded-full border font-bold uppercase tracking-wider ${getCategoryColor(cert.category)}`}>
-                    {cert.category}
-                  </span>
-                  <Award className="w-5 h-5 text-gray-500 group-hover:text-purple-400 transition-colors" />
+            const isVisible = offset < 3;
+            if (!isVisible) return null;
+
+            const zIndex = 30 - offset;
+            const opacity = 1 - offset * 0.25;
+            const scale = 1 - offset * 0.05;
+            
+            const translateX = offset * 20;
+            const translateY = offset * 12;
+            const rotateY = offset * 3;
+
+            return (
+              <div
+                key={`${cert.title}-${idx}`}
+                onClick={() => offset > 0 && setActiveIndex(idx)}
+                style={{
+                  zIndex,
+                  opacity,
+                  transform: `translateX(${translateX}px) translateY(${translateY}px) scale(${scale}) rotateY(${rotateY}deg)`,
+                  transition: "transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.6s, z-index 0.6s",
+                }}
+                className={`absolute w-full h-[300px] glass-card rounded-2xl border border-white/5 p-6 flex flex-col justify-between shadow-2xl ${
+                  offset > 0 ? "cursor-pointer select-none" : ""
+                }`}
+              >
+                {/* Decorative corner */}
+                <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-blue-500/5 to-transparent pointer-events-none" />
+
+                <div className="space-y-4">
+                  {/* Category & Badge */}
+                  <div className="flex items-center justify-between">
+                    <span className={`text-[9px] px-2.5 py-1 rounded-full border font-bold uppercase tracking-wider ${getCategoryColor(cert.category)}`}>
+                      {cert.category}
+                    </span>
+                    <Award className="w-5 h-5 text-gray-500 group-hover:text-purple-400 transition-colors" />
+                  </div>
+
+                  {/* Title */}
+                  <h3 className="font-bold text-gray-100 leading-snug line-clamp-3 text-sm">
+                    {cert.title}
+                  </h3>
                 </div>
 
-                {/* Title */}
-                <h3 className="font-bold text-gray-100 group-hover:text-white transition-colors leading-snug line-clamp-3 text-sm">
-                  {cert.title}
-                </h3>
+                {/* Footer details */}
+                <div className="pt-4 border-t border-white/5 flex items-center justify-between text-xs text-gray-400">
+                  <span className="font-semibold text-gray-300">{cert.issuer}</span>
+                  <span className="flex items-center gap-1.5 font-medium">
+                    <Calendar className="w-3.5 h-3.5" />
+                    {cert.date}
+                  </span>
+                </div>
               </div>
-
-              {/* Issuer & Date info */}
-              <div className="pt-6 mt-6 border-t border-white/5 flex items-center justify-between text-xs text-gray-400">
-                <span className="font-semibold text-gray-300">{cert.issuer}</span>
-                <span className="flex items-center gap-1.5 font-medium">
-                  <Calendar className="w-3.5 h-3.5" />
-                  {cert.date}
-                </span>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>

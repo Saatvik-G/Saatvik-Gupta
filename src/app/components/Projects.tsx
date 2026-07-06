@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useRef } from "react";
-import { ExternalLink, Code2, FolderGit, ChevronLeft, ChevronRight } from "lucide-react";
+import React, { useState } from "react";
+import { ExternalLink, Code2, ChevronLeft, ChevronRight, Layers } from "lucide-react";
 
 const GithubIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg
@@ -104,111 +104,140 @@ const PROJECTS: Project[] = [
 ];
 
 export default function Projects() {
-  const scrollRef = useRef<HTMLDivElement>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
 
-  const scroll = (direction: "left" | "right") => {
-    if (scrollRef.current) {
-      const { scrollLeft, clientWidth } = scrollRef.current;
-      const scrollTo = direction === "left" ? scrollLeft - clientWidth * 0.75 : scrollLeft + clientWidth * 0.75;
-      scrollRef.current.scrollTo({ left: scrollTo, behavior: "smooth" });
-    }
+  const nextCard = () => {
+    setActiveIndex((prev) => (prev + 1) % PROJECTS.length);
+  };
+
+  const prevCard = () => {
+    setActiveIndex((prev) => (prev - 1 + PROJECTS.length) % PROJECTS.length);
   };
 
   return (
-    <section id="projects" className="py-32 relative overflow-hidden bg-[#030303]">
-      <div className="absolute top-1/2 left-0 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl -z-10" />
-
-      <div className="max-w-7xl mx-auto px-6 md:px-12">
+    <section id="projects" className="py-20 relative overflow-hidden bg-transparent">
+      <div className="max-w-7xl mx-auto px-6 md:px-12 flex flex-col items-center">
         {/* Section Header */}
-        <div className="flex items-center justify-between mb-16">
+        <div className="w-full flex items-center justify-between mb-16">
           <div>
             <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight bg-gradient-to-r from-white via-gray-200 to-gray-400 bg-clip-text text-transparent">
-              Projects
+              Projects Showcase
             </h2>
             <div className="h-[3px] w-20 bg-gradient-to-r from-blue-500 to-purple-500 mt-3 rounded-full" />
           </div>
 
-          {/* Navigation Arrows */}
-          <div className="flex gap-2">
+          <div className="flex gap-2 z-10">
             <button
-              onClick={() => scroll("left")}
+              onClick={prevCard}
               className="p-3 rounded-full bg-white/5 border border-white/5 text-gray-400 hover:text-white hover:bg-white/10 transition-all cursor-pointer"
-              aria-label="Scroll left"
+              aria-label="Previous project"
             >
               <ChevronLeft className="w-5 h-5" />
             </button>
             <button
-              onClick={() => scroll("right")}
+              onClick={nextCard}
               className="p-3 rounded-full bg-white/5 border border-white/5 text-gray-400 hover:text-white hover:bg-white/10 transition-all cursor-pointer"
-              aria-label="Scroll right"
+              aria-label="Next project"
             >
               <ChevronRight className="w-5 h-5" />
             </button>
           </div>
         </div>
 
-        {/* Horizontal Scrolling Wrapper */}
-        <div
-          ref={scrollRef}
-          className="flex gap-8 overflow-x-auto pb-8 pt-4 scroll-smooth no-scrollbar snap-x snap-mandatory card-perspective"
-        >
-          {PROJECTS.map((project, idx) => (
-            <div
-              key={`${project.name}-${idx}`}
-              className="flex-shrink-0 w-[300px] sm:w-[360px] snap-start glass-card rounded-2xl border border-white/5 overflow-hidden flex flex-col justify-between card-3d"
-            >
-              {/* Aesthetic Header Visual */}
-              <div className={`h-36 w-full bg-gradient-to-b ${project.gradient} p-6 flex flex-col justify-between border-b border-white/5`}>
-                <div className="flex items-center justify-between w-full">
-                  <Code2 className="w-6 h-6 text-gray-400" />
-                  <div className="flex items-center gap-3">
-                    <a
-                      href={project.githubUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-gray-400 hover:text-white transition-colors"
-                      aria-label="GitHub Repository"
-                    >
-                      <GithubIcon className="w-5 h-5" />
-                    </a>
-                    {project.liveUrl && (
-                      <a
-                        href={project.liveUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-gray-400 hover:text-white transition-colors"
-                        aria-label="Live Demo"
-                      >
-                        <ExternalLink className="w-5 h-5" />
-                      </a>
+        {/* 3D Stacked Container */}
+        <div className="relative w-full max-w-[480px] h-[460px] flex items-center justify-center card-perspective">
+          {PROJECTS.map((project, idx) => {
+            // Calculate relative offset position in stack
+            let offset = idx - activeIndex;
+            if (offset < 0) {
+              offset = offset + PROJECTS.length;
+            }
+
+            // We only render 3 cards in the visible stack
+            const isVisible = offset < 3;
+            if (!isVisible) return null;
+
+            // Stack styles configuration
+            const zIndex = 30 - offset;
+            const opacity = 1 - offset * 0.25;
+            const scale = 1 - offset * 0.05;
+            
+            // Offset shifting variables (smaller on mobile)
+            const translateX = offset * 25; // in px
+            const translateY = offset * 15; // in px
+            const rotateY = offset * 3; // rotate in Y
+
+            return (
+              <div
+                key={`${project.name}-${idx}`}
+                onClick={() => offset > 0 && setActiveIndex(idx)}
+                style={{
+                  zIndex,
+                  opacity,
+                  transform: `translateX(${translateX}px) translateY(${translateY}px) scale(${scale}) rotateY(${rotateY}deg)`,
+                  transition: "transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.6s, z-index 0.6s",
+                }}
+                className={`absolute w-full h-[400px] glass-card rounded-2xl border border-white/5 overflow-hidden flex flex-col justify-between shadow-2xl ${
+                  offset > 0 ? "cursor-pointer select-none" : ""
+                }`}
+              >
+                {/* Visual Header card decoration */}
+                <div className={`h-36 w-full bg-gradient-to-b ${project.gradient} p-6 flex flex-col justify-between border-b border-white/5`}>
+                  <div className="flex items-center justify-between w-full">
+                    <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-gray-400 bg-white/5 px-2.5 py-1 rounded-md">
+                      <Layers className="w-3.5 h-3.5" />
+                      <span>Project {idx + 1} / {PROJECTS.length}</span>
+                    </div>
+                    {offset === 0 && (
+                      <div className="flex items-center gap-3">
+                        <a
+                          href={project.githubUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-gray-400 hover:text-white transition-colors"
+                          aria-label="GitHub Repository"
+                        >
+                          <GithubIcon className="w-5 h-5" />
+                        </a>
+                        {project.liveUrl && (
+                          <a
+                            href={project.liveUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-gray-400 hover:text-white transition-colors"
+                            aria-label="Live Demo"
+                          >
+                            <ExternalLink className="w-5 h-5" />
+                          </a>
+                        )}
+                      </div>
                     )}
                   </div>
+                  <h3 className="text-base sm:text-lg font-bold text-white leading-snug line-clamp-1">
+                    {project.name.split(" — ")[0]}
+                  </h3>
                 </div>
-                <h3 className="text-base font-bold text-white leading-snug line-clamp-1">
-                  {project.name.split(" — ")[0]}
-                </h3>
-              </div>
 
-              {/* Card Body */}
-              <div className="p-6 space-y-4 flex-1 flex flex-col justify-between">
-                <p className="text-gray-300 text-sm leading-relaxed line-clamp-4">
-                  {project.description}
-                </p>
+                {/* Content Box */}
+                <div className="p-6 space-y-4 flex-1 flex flex-col justify-between">
+                  <p className="text-gray-300 text-sm leading-relaxed line-clamp-4">
+                    {project.description}
+                  </p>
 
-                {/* Tech Pills */}
-                <div className="flex flex-wrap gap-2 pt-4 border-t border-white/5">
-                  {project.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="text-[10px] px-2.5 py-1 rounded bg-white/5 border border-white/5 text-gray-400 font-medium"
-                    >
-                      {tag}
-                    </span>
-                  ))}
+                  <div className="flex flex-wrap gap-2 pt-4 border-t border-white/5">
+                    {project.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="text-[10px] px-2.5 py-1 rounded bg-white/5 border border-white/5 text-gray-400 font-medium"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>
