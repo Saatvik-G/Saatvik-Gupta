@@ -36,7 +36,7 @@ const GithubIcon = (props: React.SVGProps<SVGSVGElement>) => (
 
 export default function Contact() {
   const [copied, setCopied] = useState(false);
-  const emailAddress = "saatvik.gupta@example.com"; // standard placeholder email address
+  const emailAddress = "saatvikgupta2006@gmail.com";
 
   const handleCopyEmail = () => {
     navigator.clipboard.writeText(emailAddress);

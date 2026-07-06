@@ -1,7 +1,7 @@
 "use client";
 
-import React from "react";
-import { ExternalLink, Code2, FolderGit } from "lucide-react";
+import React, { useRef } from "react";
+import { ExternalLink, Code2, FolderGit, ChevronLeft, ChevronRight } from "lucide-react";
 
 const GithubIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg
@@ -24,117 +24,143 @@ interface Project {
   tags: string[];
   githubUrl: string;
   liveUrl?: string;
-  featured: boolean;
+  gradient: string;
 }
 
 const PROJECTS: Project[] = [
   {
-    name: "EcoTrace — Carbon Footprint Intelligence Platform",
+    name: "EcoTrace — Carbon Footprint Platform",
     description:
-      "A personal carbon footprint tracking platform built with vanilla HTML/CSS/JavaScript. Features an interactive dashboard, activity logging, Chart.js analytics, AI-powered coaching system, gamified achievements, and full offline functionality using localStorage. Crafted with zero dependencies for instant load times and privacy-first design.",
+      "A personal carbon footprint tracking platform built with HTML/CSS/JS. Features an interactive dashboard, activity logging, Chart.js analytics, AI coaching, gamified achievements, and offline caching via localStorage.",
     tags: ["HTML5", "CSS3", "JavaScript", "Chart.js", "localStorage"],
     githubUrl: "https://github.com/Saatvik-G/Carbon-Footprint-Awareness-Platform",
     liveUrl: "https://saatvik-g.github.io/Carbon-Footprint-Awareness-Platform/",
-    featured: true,
+    gradient: "from-emerald-500/20 via-teal-500/10 to-transparent",
   },
   {
-    name: "Jack&Trades — Local Service Marketplace",
+    name: "Jack&Trades — Service Marketplace",
     description:
-      "A full-stack marketplace web application connecting local freelancers and skilled handymen directly with clients in their community. Supports streamlined scheduling, booking mechanisms, customer reviews, and a responsive frontend dashboard.",
-    tags: ["Next.js", "React", "Node.js", "Express", "MongoDB", "Tailwind CSS"],
+      "A full-stack marketplace web application connecting local freelancers and skilled handymen directly with clients. Supports streamlined scheduling, booking mechanisms, and customer reviews.",
+    tags: ["Next.js", "React", "Node.js", "Express", "MongoDB"],
     githubUrl: "https://github.com/Saatvik-G",
-    featured: true,
+    gradient: "from-blue-500/20 via-indigo-500/10 to-transparent",
   },
   {
     name: "Music Recommendation System",
     description:
-      "An intelligent, content-based recommendation engine that filters and suggests tracks based on audio features, user preference clustering, and mood modeling. Built using Flask for API endpoints and Python for ML computations.",
-    tags: ["Python", "Pandas", "Scikit-learn", "Flask", "Machine Learning"],
+      "An intelligent, content-based recommendation engine filtering tracks based on audio features, user preference clustering, and mood modeling. Built with Python and Flask.",
+    tags: ["Python", "Pandas", "Scikit-learn", "Flask"],
     githubUrl: "https://github.com/Saatvik-G",
-    featured: true,
+    gradient: "from-purple-500/20 via-pink-500/10 to-transparent",
   },
   {
     name: "Plagiarism Checker",
     description:
-      "An algorithm-driven text analysis tool calculating document similarity ratios using natural language processing (NLP). Leverages TF-IDF vectorization and cosine similarity to compare multiple files and flag potential plagiarism.",
-    tags: ["Python", "NLTK", "Flask", "NLP", "HTML5", "CSS3"],
+      "An algorithm-driven text analysis tool calculating document similarity ratios using TF-IDF vectorization and cosine similarity to compare multiple files and flag similarities.",
+    tags: ["Python", "NLTK", "Flask", "NLP"],
     githubUrl: "https://github.com/Saatvik-G/Plagiarism-Checker",
-    featured: false,
+    gradient: "from-red-500/20 via-amber-500/10 to-transparent",
   },
   {
-    name: "Task Tracker Productivity Board",
+    name: "Task Tracker Board",
     description:
       "An interactive task workspace with columns, categorization, status toggles, priority tags, and statistics dashboards. Keeps data synced locally for seamless client-side planning.",
     tags: ["React", "TypeScript", "Tailwind CSS", "LocalStorage"],
     githubUrl: "https://github.com/Saatvik-G",
-    featured: false,
+    gradient: "from-cyan-500/20 via-blue-500/10 to-transparent",
   },
   {
-    name: "Mean-Variance-Standard Deviation Calculator",
+    name: "Mean-Variance-Std Dev Calculator",
     description:
-      "A mathematical statistics tool built with NumPy that converts array streams into 3x3 matrices, calculating values of mean, variance, standard deviation, max, min, and sum across rows, columns, and flattened states.",
+      "A mathematical statistics tool built with NumPy that converts array streams into 3x3 matrices, calculating values of mean, variance, standard deviation, max, min, and sum across rows and columns.",
     tags: ["Python", "NumPy", "Data Science"],
     githubUrl: "https://github.com/Saatvik-G/Mean-Variance-St.-Deviation-Calculator",
-    featured: false,
+    gradient: "from-yellow-500/20 via-orange-500/10 to-transparent",
   },
   {
     name: "Cryptographic Encoder-Decoder",
     description:
-      "A security utility program implementing customizable cryptography keys to encode and decode sensitive text messages. Protects information locally using robust cryptographic standard practices.",
+      "A security utility program implementing customizable cryptography keys to encode and decode sensitive text messages, keeping calculations local and secure.",
     tags: ["Python", "Cryptography", "Security"],
     githubUrl: "https://github.com/Saatvik-G/Encoder-Decoder",
-    featured: false,
+    gradient: "from-indigo-500/20 via-purple-500/10 to-transparent",
   },
   {
     name: "Random Password Generator",
     description:
-      "A high-security, responsive client-side web utility that generates cryptographically secure, randomized keys. Users can customize length and match rules (numbers, capitals, symbols).",
+      "A high-security client-side web utility that generates cryptographically secure, randomized keys. Users can customize length, caps, numbers, and symbols.",
     tags: ["HTML5", "CSS3", "JavaScript", "Security"],
     githubUrl: "https://github.com/Saatvik-G/Random-Password-Generator",
-    featured: false,
+    gradient: "from-fuchsia-500/20 via-pink-500/10 to-transparent",
   },
   {
     name: "Snake-Water-Gun Game",
     description:
-      "An interactive implementation of the classic Indian variant of Rock-Paper-Scissors. Tracks overall win-loss analytics, scoreboard streaks, and features an adaptive computer choice engine.",
+      "An interactive game of Snake-Water-Gun featuring a gameplay session loop, score statistics tracking, and interactive computer selection rules.",
     tags: ["Python", "Algorithms", "Game Dev"],
     githubUrl: "https://github.com/Saatvik-G/Snake-Water-Gun-Game",
-    featured: false,
+    gradient: "from-green-500/20 via-emerald-500/10 to-transparent",
   },
 ];
 
 export default function Projects() {
-  const featuredProjects = PROJECTS.filter((p) => p.featured);
-  const remainingProjects = PROJECTS.filter((p) => !p.featured);
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const scroll = (direction: "left" | "right") => {
+    if (scrollRef.current) {
+      const { scrollLeft, clientWidth } = scrollRef.current;
+      const scrollTo = direction === "left" ? scrollLeft - clientWidth * 0.75 : scrollLeft + clientWidth * 0.75;
+      scrollRef.current.scrollTo({ left: scrollTo, behavior: "smooth" });
+    }
+  };
 
   return (
-    <section id="projects" className="py-24 relative overflow-hidden">
-      <div className="absolute top-1/2 left-0 w-80 h-80 bg-blue-500/5 rounded-full blur-3xl -z-10" />
+    <section id="projects" className="py-32 relative overflow-hidden bg-[#030303]">
+      <div className="absolute top-1/2 left-0 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl -z-10" />
 
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         {/* Section Header */}
-        <div className="mb-16">
-          <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight bg-gradient-to-r from-white via-gray-200 to-gray-400 bg-clip-text text-transparent">
-            Featured Projects
-          </h2>
-          <div className="h-[3px] w-20 bg-gradient-to-r from-blue-500 to-purple-500 mt-3 rounded-full" />
+        <div className="flex items-center justify-between mb-16">
+          <div>
+            <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight bg-gradient-to-r from-white via-gray-200 to-gray-400 bg-clip-text text-transparent">
+              Projects
+            </h2>
+            <div className="h-[3px] w-20 bg-gradient-to-r from-blue-500 to-purple-500 mt-3 rounded-full" />
+          </div>
+
+          {/* Navigation Arrows */}
+          <div className="flex gap-2">
+            <button
+              onClick={() => scroll("left")}
+              className="p-3 rounded-full bg-white/5 border border-white/5 text-gray-400 hover:text-white hover:bg-white/10 transition-all cursor-pointer"
+              aria-label="Scroll left"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+            <button
+              onClick={() => scroll("right")}
+              className="p-3 rounded-full bg-white/5 border border-white/5 text-gray-400 hover:text-white hover:bg-white/10 transition-all cursor-pointer"
+              aria-label="Scroll right"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
+          </div>
         </div>
 
-        {/* Featured Projects Grid (Large, 1-column on mobile, 2-column or 3-column on larger desktop) */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-          {featuredProjects.map((project, idx) => (
+        {/* Horizontal Scrolling Wrapper */}
+        <div
+          ref={scrollRef}
+          className="flex gap-8 overflow-x-auto pb-8 scroll-smooth no-scrollbar snap-x snap-mandatory"
+        >
+          {PROJECTS.map((project, idx) => (
             <div
               key={`${project.name}-${idx}`}
-              className="glass-card flex flex-col justify-between p-6 md:p-8 rounded-2xl border border-white/5 relative overflow-hidden group shadow-xl"
+              className="flex-shrink-0 w-[300px] sm:w-[360px] snap-start glass-card rounded-2xl border border-white/5 overflow-hidden flex flex-col justify-between"
             >
-              {/* Highlight background glow */}
-              <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-blue-500/5 to-purple-500/5 opacity-100 transition-opacity duration-300 pointer-events-none" />
-
-              <div className="space-y-5">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs px-2.5 py-1 rounded-full bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-500/25 text-blue-400 font-bold uppercase tracking-wider">
-                    Featured
-                  </span>
+              {/* Aesthetic Header Visual */}
+              <div className={`h-36 w-full bg-gradient-to-b ${project.gradient} p-6 flex flex-col justify-between border-b border-white/5`}>
+                <div className="flex items-center justify-between w-full">
+                  <Code2 className="w-6 h-6 text-gray-400" />
                   <div className="flex items-center gap-3">
                     <a
                       href={project.githubUrl}
@@ -158,98 +184,28 @@ export default function Projects() {
                     )}
                   </div>
                 </div>
-
-                <h3 className="text-lg md:text-xl font-bold text-white group-hover:text-blue-400 transition-colors leading-snug">
-                  {project.name}
+                <h3 className="text-base font-bold text-white leading-snug line-clamp-1">
+                  {project.name.split(" — ")[0]}
                 </h3>
+              </div>
 
+              {/* Card Body */}
+              <div className="p-6 space-y-4 flex-1 flex flex-col justify-between">
                 <p className="text-gray-300 text-sm leading-relaxed line-clamp-4">
                   {project.description}
                 </p>
-              </div>
 
-              {/* Tags block */}
-              <div className="mt-8 pt-6 border-t border-white/5 flex flex-wrap gap-2">
-                {project.tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="text-xs px-2.5 py-1 rounded-md bg-white/5 border border-white/5 text-gray-400 font-medium"
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Other Projects Subheading */}
-        <div className="mb-10">
-          <h3 className="text-xl md:text-2xl font-bold text-white flex items-center gap-2">
-            <FolderGit className="w-5 h-5 text-purple-400" />
-            More Accomplishments
-          </h3>
-          <div className="h-[2px] w-12 bg-purple-500/30 mt-2 rounded-full" />
-        </div>
-
-        {/* Regular Projects Grid */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {remainingProjects.map((project, idx) => (
-            <div
-              key={`${project.name}-${idx}`}
-              className="glass-card flex flex-col justify-between p-6 rounded-2xl border border-white/5 relative overflow-hidden group"
-            >
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <Code2 className="w-5 h-5 text-gray-500 group-hover:text-purple-400 transition-colors" />
-                  <div className="flex items-center gap-3">
-                    <a
-                      href={project.githubUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-gray-400 hover:text-white transition-colors"
-                      aria-label="GitHub Repository"
+                {/* Tech Pills */}
+                <div className="flex flex-wrap gap-2 pt-4 border-t border-white/5">
+                  {project.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="text-[10px] px-2.5 py-1 rounded bg-white/5 border border-white/5 text-gray-400 font-medium"
                     >
-                      <GithubIcon className="w-4 h-4" />
-                    </a>
-                    {project.liveUrl && (
-                      <a
-                        href={project.liveUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-gray-400 hover:text-white transition-colors"
-                        aria-label="Live Demo"
-                      >
-                        <ExternalLink className="w-4 h-4" />
-                      </a>
-                    )}
-                  </div>
+                      {tag}
+                    </span>
+                  ))}
                 </div>
-
-                <h4 className="text-base font-bold text-white group-hover:text-purple-400 transition-colors leading-snug line-clamp-1">
-                  {project.name.split(" — ")[0]}
-                </h4>
-
-                <p className="text-gray-300 text-xs md:text-sm leading-relaxed line-clamp-3">
-                  {project.description}
-                </p>
-              </div>
-
-              {/* Tags block */}
-              <div className="mt-6 pt-4 border-t border-white/5 flex flex-wrap gap-1.5">
-                {project.tags.slice(0, 3).map((tag) => (
-                  <span
-                    key={tag}
-                    className="text-[10px] px-2 py-0.5 rounded-md bg-white/5 border border-white/5 text-gray-400 font-medium"
-                  >
-                    {tag}
-                  </span>
-                ))}
-                {project.tags.length > 3 && (
-                  <span className="text-[10px] px-1.5 py-0.5 text-gray-500 font-medium">
-                    +{project.tags.length - 3}
-                  </span>
-                )}
               </div>
             </div>
           ))}

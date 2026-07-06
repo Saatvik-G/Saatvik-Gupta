@@ -40,27 +40,16 @@ export default function Hero() {
 
       {/* Hero content container */}
       <div className="max-w-7xl mx-auto px-6 md:px-12 z-10 text-center relative pointer-events-auto">
-        {/* Code tag indicator */}
-        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20 text-xs font-semibold uppercase tracking-widest mb-6 animate-fade-in">
-          <Terminal className="w-3.5 h-3.5" />
-          <span>Computer Science Portfolio</span>
-        </div>
-
         {/* Title */}
-        <h1 className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-white mb-6">
+        <h1 className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-white mb-8">
           Hi, I am{" "}
-          <span className="block mt-2 bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-500 bg-clip-text text-transparent">
+          <span className="block mt-2 bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-500 bg-clip-text text-transparent animate-fade-in">
             Saatvik Gupta
           </span>
         </h1>
 
-        {/* Tagline / Subtitle */}
-        <p className="text-lg sm:text-xl md:text-2xl font-semibold text-gray-300 mb-4 max-w-3xl mx-auto">
-          CS Student | Cloud • AI • Data Analytics • Cybersecurity
-        </p>
-
         {/* Philosophy */}
-        <p className="text-sm sm:text-base text-gray-400 max-w-xl mx-auto italic mb-10">
+        <p className="text-lg sm:text-xl text-gray-300 max-w-xl mx-auto italic mb-12">
           "Curiosity is my compass. Consistency is my habit."
         </p>
 
