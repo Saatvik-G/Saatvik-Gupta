@@ -72,30 +72,30 @@ export default function Skills() {
           {SKILL_GROUPS.map((group, idx) => (
             <div
               key={`${group.title}-${idx}`}
-              className={`glass-card p-8 rounded-2xl border border-white/5 flex flex-col justify-between group transition-all duration-300 ${group.borderColor}`}
+              className={`glass-card p-10 rounded-none border border-white/10 flex flex-col justify-between group transition-all duration-300 bg-[#08080c] ${group.borderColor}`}
             >
-              <div className="space-y-6">
+              <div className="space-y-8">
                 {/* Header with icon and title */}
-                <div className="flex items-center gap-4">
-                  <div className={`p-3 rounded-xl ${group.iconColor} flex-shrink-0`}>
+                <div className="flex items-center gap-5">
+                  <div className={`p-3.5 rounded-none ${group.iconColor} flex-shrink-0 border border-white/5`}>
                     {group.icon}
                   </div>
                   <div>
                     <h3 className="text-lg font-bold text-white group-hover:text-gray-200 transition-colors">
                       {group.title}
                     </h3>
-                    <p className="text-xs text-gray-400 mt-1 leading-relaxed">
+                    <p className="text-xs text-gray-400 mt-1 leading-relaxed font-light">
                       {group.description}
                     </p>
                   </div>
                 </div>
 
                 {/* Skills tags cloud */}
-                <div className="flex flex-wrap gap-2.5 pt-4 border-t border-white/5">
+                <div className="flex flex-wrap gap-y-3.5 gap-x-2 pt-6 border-t border-white/5">
                   {group.skills.map((skill) => (
                     <span
                       key={skill}
-                      className="text-xs px-3 py-1.5 rounded-lg bg-white/5 border border-white/5 text-gray-300 font-medium hover:bg-white/10 hover:text-white transition-colors"
+                      className="inline-flex items-center text-xs px-3.5 py-1.5 bg-white/5 border border-white/5 text-gray-300 font-mono hover:bg-white/10 hover:text-white hover:border-white/10 transition-colors leading-none"
                     >
                       {skill}
                     </span>

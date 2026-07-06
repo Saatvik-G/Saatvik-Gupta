@@ -72,9 +72,6 @@ export default function SplashScreen({ onEnter }: SplashScreenProps) {
         </button>
       </div>
 
-      <div className="absolute bottom-10 text-[10px] text-gray-600 font-mono tracking-widest uppercase pointer-events-none">
-        Interactive 3D Experience
-      </div>
     </div>
   );
 }

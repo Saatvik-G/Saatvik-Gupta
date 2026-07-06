@@ -45,34 +45,34 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" className="py-24 relative overflow-hidden bg-[#07070a]/50">
+    <section id="contact" className="py-36 relative overflow-hidden bg-transparent">
       {/* Background glow decorator */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-purple-500/5 rounded-full blur-3xl -z-10" />
 
       <div className="max-w-7xl mx-auto px-6 md:px-12 text-center">
         {/* Section Header */}
-        <div className="max-w-2xl mx-auto mb-16">
+        <div className="max-w-2xl mx-auto mb-20">
           <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight bg-gradient-to-r from-white via-gray-200 to-gray-400 bg-clip-text text-transparent">
             Get In Touch
           </h2>
-          <div className="h-[3px] w-20 bg-gradient-to-r from-blue-500 to-purple-500 mt-3 mx-auto rounded-full" />
-          <p className="mt-6 text-gray-300 leading-relaxed text-base md:text-lg">
+          <div className="h-[3px] w-20 bg-gradient-to-r from-blue-500 to-purple-500 mt-4 mx-auto rounded-full" />
+          <p className="mt-8 text-gray-300 leading-relaxed text-base md:text-lg font-light">
             Open to internships, collaborations, and opportunities. Feel free to reach out!
           </p>
         </div>
 
         {/* Action Cards */}
-        <div className="max-w-3xl mx-auto grid md:grid-cols-2 gap-6">
+        <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-12">
           {/* Email Card */}
-          <div className="glass-card p-8 rounded-2xl border border-white/5 flex flex-col justify-between items-center text-center group">
-            <div className="space-y-4 w-full">
+          <div className="glass-card p-10 md:p-12 rounded-none border border-white/10 flex flex-col justify-between items-center text-center group bg-[#08080c]">
+            <div className="space-y-6 w-full">
               <div className="p-4 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20 w-fit mx-auto group-hover:scale-110 transition-transform duration-300">
                 <Mail className="w-6 h-6" />
               </div>
-              <h3 className="text-lg font-bold text-white">Email Address</h3>
-              <p className="text-sm text-gray-400">Direct inquiries, project collaboration, or internship opportunities.</p>
+              <h3 className="text-xl font-bold text-white">Email Address</h3>
+              <p className="text-sm text-gray-400 font-light">Direct inquiries, project collaboration, or internship opportunities.</p>
               
-              <div className="flex items-center justify-between gap-3 p-3.5 bg-white/5 rounded-xl border border-white/5 font-mono text-xs md:text-sm text-gray-300 select-all">
+              <div className="flex items-center justify-between gap-3 p-4 bg-white/5 rounded-none border border-white/5 font-mono text-xs md:text-sm text-gray-300 select-all">
                 <span>{emailAddress}</span>
                 <button
                   onClick={handleCopyEmail}
@@ -86,27 +86,27 @@ export default function Contact() {
 
             <a
               href={`mailto:${emailAddress}`}
-              className="mt-6 w-full py-3 rounded-xl bg-gradient-to-r from-blue-600 to-blue-500 text-white font-medium text-sm hover:from-blue-500 hover:to-blue-400 transition-all duration-300 shadow-lg shadow-blue-500/15"
+              className="mt-8 w-full py-3.5 rounded-none bg-gradient-to-r from-blue-600 to-blue-500 text-white font-mono font-bold text-xs uppercase tracking-widest hover:from-blue-500 hover:to-blue-400 transition-all duration-300 shadow-lg shadow-blue-500/15"
             >
               Send an Email
             </a>
           </div>
 
           {/* Socials Card */}
-          <div className="glass-card p-8 rounded-2xl border border-white/5 flex flex-col justify-between items-center text-center group">
-            <div className="space-y-4 w-full">
+          <div className="glass-card p-10 md:p-12 rounded-none border border-white/10 flex flex-col justify-between items-center text-center group bg-[#08080c]">
+            <div className="space-y-6 w-full">
               <div className="p-4 rounded-full bg-purple-500/10 text-purple-400 border border-purple-500/20 w-fit mx-auto group-hover:scale-110 transition-transform duration-300">
                 <MessageSquare className="w-6 h-6" />
               </div>
-              <h3 className="text-lg font-bold text-white">Social Connections</h3>
-              <p className="text-sm text-gray-400">Find me on professional platforms and explore my developer contributions.</p>
+              <h3 className="text-xl font-bold text-white">Social Connections</h3>
+              <p className="text-sm text-gray-400 font-light">Find me on professional platforms and explore my developer contributions.</p>
               
               <div className="grid grid-cols-2 gap-4">
                 <a
                   href="https://www.linkedin.com/in/saatvik-gupta-ab7598351"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2 p-3 bg-white/5 rounded-xl border border-white/5 text-gray-300 hover:text-white hover:border-white/10 transition-colors"
+                  className="flex items-center justify-center gap-2 p-3.5 bg-white/5 rounded-none border border-white/5 text-gray-300 hover:text-white hover:border-white/10 transition-colors"
                 >
                   <LinkedinIcon className="w-4 h-4 text-blue-400" />
                   <span className="text-xs font-semibold">LinkedIn</span>
@@ -115,7 +115,7 @@ export default function Contact() {
                   href="https://github.com/Saatvik-G"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2 p-3 bg-white/5 rounded-xl border border-white/5 text-gray-300 hover:text-white hover:border-white/10 transition-colors"
+                  className="flex items-center justify-center gap-2 p-3.5 bg-white/5 rounded-none border border-white/5 text-gray-300 hover:text-white hover:border-white/10 transition-colors"
                 >
                   <GithubIcon className="w-4 h-4 text-white" />
                   <span className="text-xs font-semibold">GitHub</span>
@@ -123,14 +123,14 @@ export default function Contact() {
               </div>
             </div>
 
-            <div className="mt-6 w-full text-xs text-gray-400 italic">
+            <div className="mt-8 w-full text-xs text-gray-500 italic">
               "Bengaluru, Karnataka, India"
             </div>
           </div>
         </div>
 
         {/* Footer info */}
-        <div className="mt-24 pt-8 border-t border-white/5 text-xs text-gray-500">
+        <div className="mt-48 pt-12 border-t border-white/5 text-xs text-gray-500">
           <p>© {new Date().getFullYear()} Saatvik Gupta. All rights reserved.</p>
           <p className="mt-1 font-mono text-[10px]">Built with Next.js, Tailwind CSS, & Three.js</p>
         </div>

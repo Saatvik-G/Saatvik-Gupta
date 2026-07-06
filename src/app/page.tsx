@@ -6,7 +6,7 @@ import SplashScreen from "./components/SplashScreen";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import ScrollToTop from "./components/ScrollToTop";
-import { Award, Code2, ChevronLeft, ChevronRight, Layers, ArrowRight, ExternalLink } from "lucide-react";
+import { Award, Code2, ArrowRight, ExternalLink } from "lucide-react";
 
 const GithubIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg
@@ -49,21 +49,13 @@ const FEATURED_PROJECTS = [
 ];
 
 const HIGHLIGHT_CERTS = [
-  { title: "Google Cloud Generative AI Leader", issuer: "Infosys Springboard", date: "June 2026", cat: "AI & ML" },
+  { title: "Google Cloud Generative AI Leader: ML Lifecycle", issuer: "Infosys Springboard", date: "June 2026", cat: "AI & ML" },
   { title: "Data Analysis with Python (300 hrs)", issuer: "freeCodeCamp", date: "April 2026", cat: "Data" },
-  { title: "AWS Solutions Architecture", issuer: "Forage", date: "January 2026", cat: "Cloud" }
+  { title: "AWS Solutions Architecture Job Simulation", issuer: "Forage", date: "January 2026", cat: "Cloud" }
 ];
 
 export default function Home() {
   const [hasEntered, setHasEntered] = useState(false);
-  const [projIndex, setProjIndex] = useState(0);
-  const [certIndex, setCertIndex] = useState(0);
-
-  const nextProj = () => setProjIndex((prev) => (prev + 1) % FEATURED_PROJECTS.length);
-  const prevProj = () => setProjIndex((prev) => (prev - 1 + FEATURED_PROJECTS.length) % FEATURED_PROJECTS.length);
-
-  const nextCert = () => setCertIndex((prev) => (prev + 1) % HIGHLIGHT_CERTS.length);
-  const prevCert = () => setCertIndex((prev) => (prev - 1 + HIGHLIGHT_CERTS.length) % HIGHLIGHT_CERTS.length);
 
   return (
     <>
@@ -126,188 +118,120 @@ export default function Home() {
           </div>
         </section>
 
-        {/* 3D Stacked Featured Projects Carousel */}
+        {/* Featured Projects Highlight Row (Left Aligned Horizontal Scroll) */}
         <section id="featured-highlights" className="py-36 border-t border-white/5 bg-transparent relative overflow-hidden">
-          <div className="max-w-7xl mx-auto px-6 md:px-12 flex flex-col items-center space-y-16">
-            <div className="w-full flex items-center justify-between">
+          <div className="max-w-7xl mx-auto px-6 md:px-12 space-y-16">
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
               <div>
                 <p className="font-mono text-xs text-purple-400 uppercase tracking-widest">// Selected Works</p>
                 <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight text-white mt-3">
                   Featured Projects
                 </h2>
               </div>
-              <div className="flex gap-4 items-center">
-                <Link
-                  href="/projects"
-                  className="hidden sm:inline-flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider text-blue-400 hover:text-white transition-colors mr-4"
-                >
-                  All Projects Directory
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </Link>
-                <div className="flex gap-2">
-                  <button onClick={prevProj} className="p-3 rounded-full bg-white/5 border border-white/5 text-gray-400 hover:text-white hover:bg-white/10 transition-all cursor-pointer">
-                    <ChevronLeft className="w-5 h-5" />
-                  </button>
-                  <button onClick={nextProj} className="p-3 rounded-full bg-white/5 border border-white/5 text-gray-400 hover:text-white hover:bg-white/10 transition-all cursor-pointer">
-                    <ChevronRight className="w-5 h-5" />
-                  </button>
-                </div>
-              </div>
+              <Link
+                href="/projects"
+                className="group inline-flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider text-blue-400 hover:text-white transition-colors"
+              >
+                All Projects Directory
+                <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+              </Link>
             </div>
 
-            {/* 3D Stack Deck */}
-            <div className="relative w-full max-w-[450px] h-[430px] flex items-center justify-center card-perspective">
-              {FEATURED_PROJECTS.map((project, idx) => {
-                let offset = idx - projIndex;
-                if (offset < 0) offset = offset + FEATURED_PROJECTS.length;
-                const isVisible = offset < 3;
-                if (!isVisible) return null;
+            {/* Left aligned horizontal layout with custom gap to prevent overlaps */}
+            <div className="flex overflow-x-auto pb-10 pt-4 gap-8 no-scrollbar scroll-smooth snap-x snap-mandatory w-full">
+              {FEATURED_PROJECTS.map((project, idx) => (
+                <div
+                  key={idx}
+                  className="flex-shrink-0 w-[300px] sm:w-[380px] snap-start glass-card rounded-none border border-white/10 overflow-hidden flex flex-col justify-between shadow-2xl bg-[#08080c] hover:border-blue-500/20 transition-all duration-300"
+                >
+                  <div className="absolute inset-2 border border-white/5 border-dashed pointer-events-none" />
 
-                const zIndex = 30 - offset;
-                const opacity = 1 - offset * 0.25;
-                const scale = 1 - offset * 0.05;
-                const translateX = offset * 25;
-                const translateY = offset * 15;
-                const rotateY = offset * 3;
-
-                return (
-                  <div
-                    key={idx}
-                    onClick={() => offset > 0 && setProjIndex(idx)}
-                    style={{
-                      zIndex,
-                      opacity,
-                      transform: `translateX(${translateX}px) translateY(${translateY}px) scale(${scale}) rotateY(${rotateY}deg)`,
-                      transition: "transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.6s, z-index 0.6s",
-                    }}
-                    className={`absolute w-full h-[380px] glass-card rounded-none border border-white/10 overflow-hidden flex flex-col justify-between shadow-2xl bg-[#08080c] ${
-                      offset > 0 ? "cursor-pointer select-none" : ""
-                    }`}
-                  >
-                    <div className="absolute inset-2 border border-white/5 border-dashed pointer-events-none" />
-
-                    <div className={`h-32 w-full bg-gradient-to-b ${project.gradient} p-5 flex flex-col justify-between border-b border-white/5`}>
-                      <div className="flex items-center justify-between">
-                        <span className="text-[10px] font-mono text-gray-400">// FEATURED {idx + 1}</span>
-                        {offset === 0 && (
-                          <div className="flex items-center gap-3">
-                            <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors">
-                              <GithubIcon className="w-5 h-5" />
-                            </a>
-                            {project.liveUrl && (
-                              <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors">
-                                <ExternalLink className="w-5 h-5" />
-                              </a>
-                            )}
-                          </div>
+                  <div className={`h-32 w-full bg-gradient-to-b ${project.gradient} p-5 flex flex-col justify-between border-b border-white/5`}>
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] font-mono text-gray-400">// PROJECT {idx + 1}</span>
+                      <div className="flex items-center gap-3">
+                        <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors">
+                          <GithubIcon className="w-4.5 h-4.5" />
+                        </a>
+                        {project.liveUrl && (
+                          <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors">
+                            <ExternalLink className="w-4.5 h-4.5" />
+                          </a>
                         )}
                       </div>
-                      <h3 className="text-base font-bold text-white truncate">{project.name.split(" — ")[0]}</h3>
                     </div>
+                    <h3 className="text-base font-bold text-white truncate">{project.name.split(" — ")[0]}</h3>
+                  </div>
 
-                    <div className="p-5 space-y-4 flex-1 flex flex-col justify-between relative z-10">
-                      <p className="text-gray-300 text-xs sm:text-sm leading-relaxed line-clamp-4 font-light">{project.description}</p>
-                      <div className="flex flex-wrap gap-2 pt-3 border-t border-white/5">
-                        {project.tags.map((tag) => (
-                          <span key={tag} className="text-[9px] px-2 py-0.5 bg-white/5 border border-white/5 text-gray-400 font-mono">{tag}</span>
-                        ))}
-                      </div>
+                  <div className="p-5 space-y-4 flex-1 flex flex-col justify-between relative z-10">
+                    <p className="text-gray-300 text-xs sm:text-sm leading-relaxed line-clamp-4 font-light">{project.description}</p>
+                    <div className="flex flex-wrap gap-2 pt-3 border-t border-white/5">
+                      {project.tags.map((tag) => (
+                        <span key={tag} className="text-[9px] px-2 py-0.5 bg-white/5 border border-white/5 text-gray-400 font-mono">{tag}</span>
+                      ))}
                     </div>
                   </div>
-                );
-              })}
+                </div>
+              ))}
             </div>
           </div>
         </section>
 
-        {/* 3D Stacked Certifications Carousel */}
+        {/* Top Certifications Highlight Row (Left Aligned Horizontal Scroll) */}
         <section className="py-36 border-t border-white/5 bg-[#050508]/40 relative overflow-hidden">
-          <div className="max-w-7xl mx-auto px-6 md:px-12 flex flex-col items-center space-y-16">
-            <div className="w-full flex items-center justify-between">
+          <div className="max-w-7xl mx-auto px-6 md:px-12 space-y-16">
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
               <div>
                 <p className="font-mono text-xs text-blue-400 uppercase tracking-widest">// Credential Highlights</p>
                 <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight text-white mt-3">
                   Top Certifications
                 </h2>
               </div>
-              <div className="flex gap-4 items-center">
-                <Link
-                  href="/certifications"
-                  className="hidden sm:inline-flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider text-blue-400 hover:text-white transition-colors mr-4"
-                >
-                  All Certifications Directory
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </Link>
-                <div className="flex gap-2">
-                  <button onClick={prevCert} className="p-3 rounded-full bg-white/5 border border-white/5 text-gray-400 hover:text-white hover:bg-white/10 transition-all cursor-pointer">
-                    <ChevronLeft className="w-5 h-5" />
-                  </button>
-                  <button onClick={nextCert} className="p-3 rounded-full bg-white/5 border border-white/5 text-gray-400 hover:text-white hover:bg-white/10 transition-all cursor-pointer">
-                    <ChevronRight className="w-5 h-5" />
-                  </button>
-                </div>
-              </div>
+              <Link
+                href="/certifications"
+                className="group inline-flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider text-blue-400 hover:text-white transition-colors"
+              >
+                All Certifications Directory
+                <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+              </Link>
             </div>
 
-            {/* 3D Stack Deck */}
-            <div className="relative w-full max-w-[400px] h-[370px] flex items-center justify-center card-perspective">
-              {HIGHLIGHT_CERTS.map((cert, idx) => {
-                let offset = idx - certIndex;
-                if (offset < 0) offset = offset + HIGHLIGHT_CERTS.length;
-                const isVisible = offset < 3;
-                if (!isVisible) return null;
+            {/* Left aligned horizontal layout with custom seal & gap to prevent overlaps */}
+            <div className="flex overflow-x-auto pb-10 pt-4 gap-8 no-scrollbar scroll-smooth snap-x snap-mandatory w-full">
+              {HIGHLIGHT_CERTS.map((cert, idx) => (
+                <div
+                  key={idx}
+                  className="relative flex-shrink-0 w-[280px] sm:w-[340px] snap-start glass-card rounded-none border border-white/10 p-6 flex flex-col justify-between shadow-2xl bg-[#08080c] hover:border-blue-500/20 transition-all duration-300 h-[320px]"
+                >
+                  <div className="absolute top-2 left-2 w-2 h-2 border-t border-l border-white/20" />
+                  <div className="absolute top-2 right-2 w-2 h-2 border-t border-r border-white/20" />
+                  <div className="absolute bottom-2 left-2 w-2 h-2 border-b border-l border-white/20" />
+                  <div className="absolute bottom-2 right-2 w-2 h-2 border-b border-r border-white/20" />
 
-                const zIndex = 30 - offset;
-                const opacity = 1 - offset * 0.25;
-                const scale = 1 - offset * 0.05;
-                const translateX = offset * 20;
-                const translateY = offset * 12;
-                const rotateY = offset * 3;
+                  <div className="flex items-center justify-between">
+                    <span className="text-[9px] font-mono text-purple-400 bg-purple-500/10 border border-purple-500/20 px-2 py-0.5 uppercase tracking-wider">{cert.cat}</span>
+                    <Award className="w-5 h-5 text-gray-500" />
+                  </div>
 
-                return (
-                  <div
-                    key={idx}
-                    onClick={() => offset > 0 && setCertIndex(idx)}
-                    style={{
-                      zIndex,
-                      opacity,
-                      transform: `translateX(${translateX}px) translateY(${translateY}px) scale(${scale}) rotateY(${rotateY}deg)`,
-                      transition: "transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.6s, z-index 0.6s",
-                    }}
-                    className={`absolute w-full h-[320px] glass-card rounded-none border border-white/10 p-6 flex flex-col justify-between shadow-2xl bg-[#08080c] ${
-                      offset > 0 ? "cursor-pointer select-none" : ""
-                    }`}
-                  >
-                    <div className="absolute top-2 left-2 w-2 h-2 border-t border-l border-white/20" />
-                    <div className="absolute top-2 right-2 w-2 h-2 border-t border-r border-white/20" />
-                    <div className="absolute bottom-2 left-2 w-2 h-2 border-b border-l border-white/20" />
-                    <div className="absolute bottom-2 right-2 w-2 h-2 border-b border-r border-white/20" />
+                  {/* Cert Seal in the middle */}
+                  <div className="flex justify-center items-center py-2 opacity-35">
+                    <svg className="w-16 h-16 text-gray-600" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <circle cx="50" cy="50" r="38" stroke="currentColor" strokeWidth="1" strokeDasharray="2 2" />
+                      <path d="M50 28 L54 38 L65 38 L56 45 L60 56 L50 49 L40 56 L44 45 L35 38 L46 38 Z" fill="currentColor" />
+                      <path d="M43 72 L37 88 L45 82 L53 88 L47 72" fill="currentColor" opacity="0.5" />
+                      <path d="M57 72 L51 88 L59 82 L67 88 L61 72" fill="currentColor" opacity="0.5" />
+                    </svg>
+                  </div>
 
-                    <div className="flex items-center justify-between">
-                      <span className="text-[9px] font-mono text-purple-400 bg-purple-500/10 border border-purple-500/20 px-2 py-0.5 uppercase tracking-wider">{cert.cat}</span>
-                      <Award className="w-5 h-5 text-gray-500" />
-                    </div>
-
-                    {/* Cert Seal in the middle */}
-                    <div className="flex justify-center items-center py-2 opacity-35">
-                      <svg className="w-16 h-16 text-gray-600" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="50" cy="50" r="38" stroke="currentColor" strokeWidth="1" strokeDasharray="2 2" />
-                        <path d="M50 28 L54 38 L65 38 L56 45 L60 56 L50 49 L40 56 L44 45 L35 38 L46 38 Z" fill="currentColor" />
-                        <path d="M43 72 L37 88 L45 82 L53 88 L47 72" fill="currentColor" opacity="0.5" />
-                        <path d="M57 72 L51 88 L59 82 L67 88 L61 72" fill="currentColor" opacity="0.5" />
-                      </svg>
-                    </div>
-
-                    <div className="space-y-3">
-                      <h3 className="font-bold text-gray-200 text-sm line-clamp-2">{cert.title}</h3>
-                      <div className="pt-3 border-t border-white/5 flex items-center justify-between text-[10px] font-mono text-gray-400">
-                        <span>{cert.issuer}</span>
-                        <span>{cert.date}</span>
-                      </div>
+                  <div className="space-y-3">
+                    <h3 className="font-bold text-gray-200 text-sm line-clamp-2">{cert.title}</h3>
+                    <div className="pt-3 border-t border-white/5 flex items-center justify-between text-[10px] font-mono text-gray-400">
+                      <span>{cert.issuer}</span>
+                      <span>{cert.date}</span>
                     </div>
                   </div>
-                );
-              })}
+                </div>
+              ))}
             </div>
           </div>
         </section>
