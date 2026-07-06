@@ -38,7 +38,9 @@ export default function Contact() {
   const [copied, setCopied] = useState(false);
   const emailAddress = "saatvikgupta2006@gmail.com";
 
-  const handleCopyEmail = () => {
+  const handleCopyEmail = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
     navigator.clipboard.writeText(emailAddress);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
@@ -62,7 +64,7 @@ export default function Contact() {
         </div>
 
         {/* Action Cards */}
-        <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-12">
+        <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-12 text-left">
           {/* Email Card */}
           <div className="glass-card p-10 md:p-12 rounded-none border border-white/10 flex flex-col justify-between items-center text-center group bg-[#08080c]">
             <div className="space-y-6 w-full">
@@ -72,11 +74,11 @@ export default function Contact() {
               <h3 className="text-xl font-bold text-white">Email Address</h3>
               <p className="text-sm text-gray-400 font-light">Direct inquiries, project collaboration, or internship opportunities.</p>
               
-              <div className="flex items-center justify-between gap-3 p-4 bg-white/5 rounded-none border border-white/5 font-mono text-xs md:text-sm text-gray-300 select-all">
-                <span>{emailAddress}</span>
+              <div className="flex items-center justify-between gap-3 p-4 bg-white/5 rounded-none border border-white/5 font-mono text-xs md:text-sm text-gray-300">
+                <span className="truncate">[add your email]</span>
                 <button
                   onClick={handleCopyEmail}
-                  className="text-gray-400 hover:text-white transition-colors cursor-pointer"
+                  className="text-gray-400 hover:text-white transition-colors cursor-pointer flex-shrink-0"
                   aria-label="Copy email to clipboard"
                 >
                   {copied ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
@@ -101,7 +103,7 @@ export default function Contact() {
               <h3 className="text-xl font-bold text-white">Social Connections</h3>
               <p className="text-sm text-gray-400 font-light">Find me on professional platforms and explore my developer contributions.</p>
               
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-4 w-full">
                 <a
                   href="https://www.linkedin.com/in/saatvik-gupta-ab7598351"
                   target="_blank"

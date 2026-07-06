@@ -28,8 +28,8 @@ export default function HeroCanvas() {
     const canvas = canvasRef.current;
 
     // Scene variables
-    let width = container.clientWidth;
-    let height = container.clientHeight;
+    let width = container.clientWidth || (typeof window !== "undefined" ? window.innerWidth : 800);
+    let height = container.clientHeight || (typeof window !== "undefined" ? window.innerHeight : 600);
 
     const scene = new THREE.Scene();
 
@@ -160,8 +160,8 @@ export default function HeroCanvas() {
     // Resize Handler
     const handleResize = () => {
       if (!containerRef.current) return;
-      width = containerRef.current.clientWidth;
-      height = containerRef.current.clientHeight;
+      width = containerRef.current.clientWidth || window.innerWidth;
+      height = containerRef.current.clientHeight || window.innerHeight;
 
       camera.aspect = width / height;
       camera.updateProjectionMatrix();
