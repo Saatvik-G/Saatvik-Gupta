@@ -3,7 +3,7 @@
     "name": "Saatvik Gupta",
     "subtitle": "CS Student | Cloud • AI • Data Analytics • Cybersecurity",
     "tagline": "\"Curiosity is my compass. Consistency is my habit.\"",
-    "bio": "Hi, I'm Saatvik — a 3rd year Computer Science student who believes the best way to learn is by actually doing. I don't wait for opportunities to come — I go out and create them. Passionate about using technology to solve real problems and create meaningful impact. Still finding my path, and I think that's okay — curiosity is my compass and consistency is my habit. Open to internships, collaborations, and opportunities.",
+    "bio": "Hi, I'm Saatvik — a 3rd year Computer Science student who believes the best way to learn is by actually doing. I don't wait for opportunities to come — I go out and create them. Passionate about using technology to solve real problems and create meaningful impact. Exploring the intersection of Cloud, AI, and Data — building real things while I figure out where I go deep. Open to internships, collaborations, and opportunities.",
     "email": "saatvikgupta2006@gmail.com",
     "linkedin": "https://www.linkedin.com/in/saatvik-gupta-ab7598351",
     "github": "https://github.com/Saatvik-G",
@@ -11,12 +11,12 @@
   },
   "metrics": [
     {
-      "value": "9+",
-      "label": "Projects Built"
+      "value": "5",
+      "label": "Selected Projects"
     },
     {
-      "value": "17",
-      "label": "Certifications"
+      "value": "5",
+      "label": "Curated Certifications"
     },
     {
       "value": "3rd",
@@ -32,7 +32,7 @@
       "role": "Cloud Computing Intern — AWS Track",
       "company": "Internship Studio (iStudio)",
       "duration": "February 2026 – April 2026",
-      "description": "Completed a 2-month cloud computing training program through Internship Studio, focused on AWS fundamentals — including EC2, S3, IAM, and core solutions architecture concepts."
+      "description": "Completed a 2-month AWS cloud internship under mentor Shivling Patil, deploying an EC2-based ROS application and documenting deployment architecture and configuration steps."
     }
   ],
   "projects": [
@@ -44,34 +44,25 @@
       "liveUrl": "https://saatvik-g.github.io/Carbon-Footprint-Awareness-Platform/",
       "gradient": "from-emerald-500/20 via-teal-500/10 to-transparent",
       "category": "Utilities",
-      "status": "Shipped",
-      "detailedSpecs": {
-        "architecture": "Client-side SPAs utilizing vanilla layouts.",
-        "milestones": [
-          "Phase 1: UI Wireframing & Grid Setup",
-          "Phase 2: LocalStorage Integration & State Sync",
-          "Phase 3: Chart.js Dashboard Visualizer"
-        ],
-        "techLog": "Optimized paint threads by compiling vector assets as raw inline SVGs."
-      }
+      "status": "Shipped"
     },
     {
-      "name": "Task Tracker Board",
+      "name": "Student Task Tracker",
       "description": "An interactive task workspace with columns, categorization, status toggles, priority tags, and statistics dashboards. Keeps data synced locally for seamless client-side planning.",
       "tags": ["HTML5", "CSS3", "JavaScript", "localStorage"],
       "githubUrl": "https://github.com/Saatvik-G/Task-Tracker.git",
-      "gradient: ": "from-cyan-500/20 via-blue-500/10 to-transparent",
+      "gradient": "from-cyan-500/20 via-blue-500/10 to-transparent",
       "category": "Utilities",
-      "status": "Shipped",
-      "detailedSpecs": {
-        "architecture": "Local-first storage board modeling Kanban card columns.",
-        "milestones": [
-          "Phase 1: Status Category Column layouts",
-          "Phase 2: Drag/drop state assertions & local storage triggers",
-          "Phase 3: Status counts & task progress counters"
-        ],
-        "techLog": "Isolated client local sync calls inside unified wrapper functions."
-      }
+      "status": "Shipped"
+    },
+    {
+      "name": "Unix Shell (Coursework)",
+      "description": "A custom command-line interpreter implementing core shell processes, environment variables mapping, file descriptor redirections, and foreground/background task execution.",
+      "tags": ["C", "Unix API", "Systems Programming"],
+      "githubUrl": "https://github.com/Saatvik-G",
+      "gradient": "from-amber-500/20 via-orange-500/10 to-transparent",
+      "category": "Utilities",
+      "status": "Shipped"
     },
     {
       "name": "Jack&Trades",
@@ -81,16 +72,7 @@
       "gradient": "from-blue-500/20 via-indigo-500/10 to-transparent",
       "category": "Full-Stack",
       "status": "In-Progress",
-      "roadmap": "Phase 1: Architecture Development",
-      "detailedSpecs": {
-        "architecture": "Split-tier router platform calling Gemini serverless models.",
-        "milestones": [
-          "Phase 1: Base Next.js routing & visual structure config",
-          "Phase 2: Gemini API tokens & server endpoints setup",
-          "Phase 3: Interdisciplinary matching algorithms execution"
-        ],
-        "techLog": "Leveraged Next.js dynamic routing to lazy-load resource graphs."
-      }
+      "roadmap": "Phase 1: Architecture Development"
     },
     {
       "name": "EchoVerse (Music Recommendation)",
@@ -100,152 +82,32 @@
       "gradient": "from-purple-500/20 via-pink-500/10 to-transparent",
       "category": "AI & Data Science",
       "status": "In-Progress",
-      "roadmap": "Phase 1: API Integrations",
-      "detailedSpecs": {
-        "architecture": "REST Client mapping sound characteristics against metadata indices.",
-        "milestones": [
-          "Phase 1: Last.fm & MusicBrainz endpoint mapping",
-          "Phase 2: OpenAI user query mood classification engine",
-          "Phase 3: Recommendation caching & client views"
-        ],
-        "techLog": "Decoupled component nodes to allow direct API calls."
-      }
-    },
-    {
-      "name": "Plagiarism Checker",
-      "description": "An algorithm-driven text analysis tool calculating document similarity ratios using TF-IDF vectorization and cosine similarity to compare multiple files and flag similarities.",
-      "tags": ["Python", "NLTK", "Flask", "NLP"],
-      "githubUrl": "https://github.com/Saatvik-G/Plagiarism-Checker",
-      "gradient": "from-red-500/20 via-amber-500/10 to-transparent",
-      "category": "AI & Data Science",
-      "status": "Shipped",
-      "detailedSpecs": {
-        "architecture": "Text parsing calculator hosted on a Flask interface.",
-        "milestones": [
-          "Phase 1: Tokenizer & NLTK preprocessing steps",
-          "Phase 2: TF-IDF vector calculations and Cosine similarity computation",
-          "Phase 3: Score comparison outputs & PDF matching display"
-        ],
-        "techLog": "Optimized vector parsing memory profiles by lazy-loading tooltips."
-      }
-    },
-    {
-      "name": "Mean-Variance-Std Dev Calculator",
-      "description": "A mathematical statistics tool built with NumPy that converts array streams into 3x3 matrices, calculating values of mean, variance, standard deviation, max, min, and sum across rows and columns.",
-      "tags": ["Python", "NumPy", "Data Science"],
-      "githubUrl": "https://github.com/Saatvik-G/Mean-Variance-St.-Deviation-Calculator",
-      "gradient": "from-yellow-500/20 via-orange-500/10 to-transparent",
-      "category": "AI & Data Science",
-      "status": "Shipped",
-      "detailedSpecs": {
-        "architecture": "Data analytics pipeline mapping mathematical indices.",
-        "milestones": [
-          "Phase 1: Dimension validation checks & shape manipulation",
-          "Phase 2: Mean, variance, and statistics computation",
-          "Phase 3: CLI outputs matching requirements"
-        ],
-        "techLog": "Direct NumPy calculations bypass row loops for speed."
-      }
-    },
-    {
-      "name": "Cryptographic Encoder-Decoder",
-      "description": "A security utility program implementing customizable cryptography keys to encode and decode sensitive text messages, keeping calculations local and secure.",
-      "tags": ["Python", "Cryptography", "Security"],
-      "githubUrl": "https://github.com/Saatvik-G/Encoder-Decoder",
-      "gradient": "from-indigo-500/20 via-purple-500/10 to-transparent",
-      "category": "Utilities",
-      "status": "Shipped",
-      "detailedSpecs": {
-        "architecture": "CLI utility applying cryptographic key translations.",
-        "milestones": [
-          "Phase 1: Custom mapping key algorithms setup",
-          "Phase 2: Text character encoding loops",
-          "Phase 3: Verification decoding checks"
-        ],
-        "techLog": "Applied safe buffer scans to prevent variable overflows."
-      }
-    },
-    {
-      "name": "Random Password Generator",
-      "description": "A high-security client-side web utility that generates cryptographically secure, randomized keys. Users can customize length, caps, numbers, and symbols.",
-      "tags": ["HTML5", "CSS3", "JavaScript", "Security"],
-      "githubUrl": "https://github.com/Saatvik-G/Random-Password-Generator",
-      "gradient": "from-fuchsia-500/20 via-pink-500/10 to-transparent",
-      "category": "Utilities",
-      "status": "Shipped",
-      "detailedSpecs": {
-        "architecture": "Client browser page computing secure random strings.",
-        "milestones": [
-          "Phase 1: Visual config checks (caps, numbers, symbols)",
-          "Phase 2: Secure random generator calculations",
-          "Phase 3: Clipboard copying script setup"
-        ],
-        "techLog": "Used window.crypto.getRandomValues for true cryptographic security."
-      }
-    },
-    {
-      "name": "Snake-Water-Gun Game",
-      "description": "An interactive game of Snake-Water-Gun featuring a gameplay session loop, score statistics tracking, and interactive computer selection rules.",
-      "tags": ["Python", "Algorithms", "Game Dev"],
-      "githubUrl": "https://github.com/Saatvik-G/Snake-Water-Gun-Game",
-      "gradient": "from-green-500/20 via-emerald-500/10 to-transparent",
-      "category": "Utilities",
-      "status": "Shipped",
-      "detailedSpecs": {
-        "architecture": "State game loop calculating rule victories.",
-        "milestones": [
-          "Phase 1: Interactive options config",
-          "Phase 2: Random computer option picker",
-          "Phase 3: Points tabulation & continue query loop"
-        ],
-        "techLog": "Sanitized character scans to prevent invalid selections."
-      }
+      "roadmap": "Phase 1: API Integrations"
     }
   ],
   "skills": [
     {
-      "title": "Cloud & Architecture",
-      "description": "Designing scalable, secure, and reliable virtual systems.",
-      "skills": ["Amazon Web Services (AWS)", "Google Cloud Platform", "Cloud Computing", "Solutions Architecture", "Cloud Infrastructure"]
+      "title": "Cloud",
+      "skills": ["AWS (EC2, S3, IAM basics)"]
     },
     {
-      "title": "AI & Machine Learning",
-      "description": "Training model architectures and integrating intelligence.",
-      "skills": ["Artificial Intelligence", "Machine Learning", "Generative AI", "Google Cloud AI", "LLM Architecture", "BERT Fine-Tuning", "Prompt Engineering"]
+      "title": "Languages",
+      "skills": ["Java", "Python", "JavaScript", "TypeScript"]
     },
     {
-      "title": "Data Science & Analytics",
-      "description": "Processing list data streams and building calculations.",
-      "skills": ["Data Science", "Data Analytics", "Python", "Pandas", "NumPy", "Chart.js", "Data Visualization", "Data Storytelling", "Predictive Modeling", "SQL"]
+      "title": "Web",
+      "skills": ["Next.js", "React", "Tailwind CSS"]
     },
     {
-      "title": "Cybersecurity & Privacy",
-      "description": "Auditing compliance and protecting digital operations.",
-      "skills": ["Cybersecurity", "Penetration Testing", "Incident Response", "Security Awareness", "AI Privacy Engineering"]
-    },
-    {
-      "title": "Software Engineering",
-      "description": "Building modern APIs and pipelines.",
-      "skills": ["JavaScript", "HTML5", "CSS3", "REST API", "Apache Kafka", "GitHub Actions", "Software Testing", "Data Modeling"]
+      "title": "Data / AI",
+      "skills": ["Gemini API integration", "OpenAI API integration"]
     }
   ],
   "certifications": [
-    { "title": "Google Cloud Generative AI Leader: ML Lifecycle & Google Cloud Tools", "issuer": "Infosys Springboard", "date": "June 2026", "category": "AI & ML" },
-    { "title": "Data Analysis with Python (300 hrs)", "issuer": "freeCodeCamp", "date": "April 2026", "category": "Data" },
-    { "title": "Tata GenAI Powered Data Analytics Job Simulation", "issuer": "Forage", "date": "February 2026", "category": "Data" },
-    { "title": "JPMorgan Chase Software Engineering Job Simulation", "issuer": "Forage", "date": "January 2026", "category": "Software Eng" },
-    { "title": "British Airways Data Science Job Simulation", "issuer": "Forage", "date": "July 2026", "category": "Data" },
-    { "title": "Deloitte Data Analytics Job Simulation", "issuer": "Forage", "date": "June 2026", "category": "Data" },
+    { "title": "AWS Internship Training Completion Certificate", "issuer": "Internship Studio", "date": "April 2026", "category": "Cloud" },
+    { "title": "Java (Basic) Certificate", "issuer": "HackerRank", "date": "August 2025", "category": "Languages" },
     { "title": "AWS Solutions Architecture Job Simulation", "issuer": "Forage", "date": "January 2026", "category": "Cloud" },
-    { "title": "Goldman Sachs Operations Job Simulation", "issuer": "Forage", "date": "January 2026", "category": "Software Eng" },
-    { "title": "AIGP: AI Privacy Engineering, Sensitive Data & Controller Obligations", "issuer": "Infosys Springboard", "date": "June 2026", "category": "Cybersecurity" },
-    { "title": "AI Fundamentals: Foundations for Understanding AI", "issuer": "IBM SkillsBuild", "date": "June 2026", "category": "AI & ML" },
-    { "title": "Introduction to Data Science", "issuer": "Cisco Networking Academy", "date": "February 2026", "category": "Data" },
-    { "title": "Commonwealth Bank Introduction to Cybersecurity", "issuer": "Forage", "date": "April 2026", "category": "Cybersecurity" },
-    { "title": "Quantium Software Engineering Job Simulation", "issuer": "Forage", "date": "June 2026", "category": "Software Eng" },
-    { "title": "Innovating with Google Cloud AI", "issuer": "Google Cloud", "date": "February 2026", "category": "AI & ML" },
-    { "title": "Wells Fargo Software Engineering Job Simulation", "issuer": "Forage", "date": "July 2026", "category": "Software Eng" },
-    { "title": "AWS Internship Training", "issuer": "Internship Studio", "date": "April 2026", "category": "Cloud" },
-    { "title": "Python (Basic)", "issuer": "HackerRank", "date": "August 2025", "category": "Data" }
+    { "title": "Google Cloud Generative AI Leader: ML Lifecycle & Google Cloud Tools", "issuer": "Infosys Springboard", "date": "June 2026", "category": "Data / AI" },
+    { "title": "Data Analysis with Python (300 hrs)", "issuer": "freeCodeCamp", "date": "April 2026", "category": "Data / AI" }
   ]
 }

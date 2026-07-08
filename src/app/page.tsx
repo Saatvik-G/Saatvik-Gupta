@@ -435,8 +435,7 @@ export default function Home() {
 
         {/* Footer */}
         <footer className="py-12 border-t border-white/5 text-[10px] font-mono text-gray-600 flex justify-between">
-          <span>© {new Date().getFullYear()} Saatvik Gupta.</span>
-          <span>LV • GTA VI • NIKE • VERCEL • KOENIGSEGG Synthesis</span>
+          <span>© {new Date().getFullYear()} Saatvik Gupta. All rights reserved.</span>
         </footer>
 
       </div>
